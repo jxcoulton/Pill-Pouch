@@ -20,7 +20,10 @@ export function Dashboard() {
         if (error) setActiveItems(user?.email);
         if (data) setActiveItems(data[0].username);
       } catch {
-        setActiveItems(user?.email);
+        await supabase
+          .from("profiles")
+          .insert({ username: user?.email, user_id: user?.id });
+        returnUsername();
       }
     }
     returnUsername();

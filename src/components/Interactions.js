@@ -54,14 +54,10 @@ const Interactions = () => {
     return medications;
   };
 
-  console.log(currentMeds);
-
   const submitCompare = () => {
     let rxcuiString = "";
     currentMeds.forEach((drug, index) => {
       rxcuiString += `${drug.rxcui}+`;
-
-      console.log(rxcuiString);
     });
     axios
       .get(

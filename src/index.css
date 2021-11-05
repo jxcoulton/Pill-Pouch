@@ -98,16 +98,12 @@ body {
 }
 
 .delete_button {
-  content: "x";
   cursor: pointer;
-  background: #ededed;
-  width: 25px;
-  height: 25px;
-  border-radius: 50%;
   line-height: 20px;
   text-align: center;
-  border: 1px solid #999;
+  border: none;
   font-size: 20px;
+  height: 15px;
 }
 
 .bodyBoxContent {
