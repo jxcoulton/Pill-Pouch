@@ -25,17 +25,23 @@ const Resources = () => {
                   <a
                     href="https://apps2.deadiversion.usdoj.gov/pubdispsearch/spring/main;jsessionid=ETV-RUjzIiOTdJAeLdIkesgeocjtKdDFK0Qr-9kF.web2?execution=e1s1"
                     target="_blank"
+                    rel="noreferrer"
                   >
                     Medication Disposal
                   </a>
                   <br />
-                  <a href="https://www.goodrx.com/" target="_blank">
+                  <a
+                    href="https://www.goodrx.com/"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
                     Lower Prices for Prescriptions
                   </a>
                   <br />
                   <a
                     href="https://www.fda.gov/drugs/drug-safety-and-availability/drug-recalls"
                     target="_blank"
+                    rel="noreferrer"
                   >
                     Recall Notices
                   </a>
@@ -43,6 +49,7 @@ const Resources = () => {
                   <a
                     href="https://triage.webpoisoncontrol.org/#!/exclusions"
                     target="_blank"
+                    rel="noreferrer"
                   >
                     Poison control website
                   </a>

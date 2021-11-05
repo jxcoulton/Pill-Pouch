@@ -1,5 +1,7 @@
 import axios from "axios";
 import React, { useState } from "react";
+import { supabase } from "../supabase";
+import { useAuth } from "../contexts/Auth";
 
 const Identify = () => {
   const initialFormData = {
@@ -10,16 +12,33 @@ const Identify = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [foundMeds, setFoundMeds] = useState([]);
   const [formData, setFormData] = useState(initialFormData);
+  const [currentMeds, setCurrentMeds] = useState([]);
+  const { user } = useAuth();
 
   const togglePopUp = () => {
     setIsOpen(!isOpen);
     resetState();
-    setFoundMeds([]);
+    // setFoundMeds([]);
+    async function getUsersMeds() {
+      try {
+        const { error, data } = await supabase
+          .from("drugs")
+          .select("drug_name, rxcui")
+          .eq("user_id", user?.id);
+        if (error) setCurrentMeds([]);
+        if (data) setCurrentMeds(data);
+      } catch {
+        setCurrentMeds([]);
+      }
+    }
+    getUsersMeds();
   };
 
   const handleChange = (e) => {
     const value =
-      e.target.value === "" ? "" : `&${e.target.name}=${e.target.value}`;
+      e.target.value === ""
+        ? ""
+        : `&${e.target.name}=${e.target.value.replace(/ /g, "%20")}`;
     setFormData({
       ...formData,
       [e.target.name]: value,
@@ -28,9 +47,23 @@ const Identify = () => {
 
   const resetState = () => {
     setFormData(initialFormData);
+    setFoundMeds([]);
   };
 
-  const fetchData = (e) => {
+  const addToCurrentMeds = (e) => {
+    const drugId = e.target.parentElement.id;
+    const drugName = e.target.previousElementSibling.innerHTML;
+    async function addMedication() {
+      await supabase
+        .from("drugs")
+        .insert({ drug_name: drugName, rxcui: drugId, user_id: user?.id });
+    }
+    addMedication();
+    alert(`${drugName} added to your list of medications`);
+    setIsOpen(!isOpen);
+  };
+
+  const fetchByPill = (e) => {
     e.preventDefault();
     axios
       .get(
@@ -40,22 +73,76 @@ const Identify = () => {
         const medications = [];
         const items = res.data.nlmRxImages;
         items.forEach((drug, index) => {
-          medications.push(
-            <li id={drug.rxcui} key={index}>
-              <h5>{drug.name}</h5>
-              <img className="medImages" src={drug.imageUrl} />
-            </li>
-          );
+          drug.name !== "" &&
+            medications.push(
+              <li id={drug.rxcui} key={index}>
+                <h5>{drug.name}</h5>
+                <button onClick={addToCurrentMeds}>Add to my chart</button>
+                <img
+                  className="medImages"
+                  src={drug.imageUrl}
+                  alt={drug.name}
+                />
+              </li>
+            );
         });
         setFoundMeds(medications);
       });
   };
-  console.log(formData);
+
+  const medsList = () => {
+    const medications = [];
+    currentMeds.forEach((med, index) => {
+      medications.push(
+        <li id={med.drug_id} key={index} className="currentMedsList">
+          <h5 value={index}>{med.drug_name}</h5>
+        </li>
+      );
+    });
+    return medications;
+  };
+
+  const fetchByName = (e) => {
+    e.preventDefault();
+    axios
+      .get(
+        `https://rximage.nlm.nih.gov/api/rximage/1/rxnav?${formData.name}&rLimit=20&resolution=600`
+      )
+      .then((res) => {
+        const medications = [];
+        const items = res.data.nlmRxImages.sort((a, b) => {
+          return a.rxcui - b.rxcui;
+        });
+        items.forEach((drug, index) => {
+          if (index > 0) {
+            if (drug.rxcui !== items[index - 1].rxcui) {
+              drug.name !== "" &&
+                medications.push(
+                  <li id={drug.rxcui} key={index}>
+                    <h5>{drug.name}</h5>
+                    <button onClick={addToCurrentMeds}>Add to my chart</button>
+                  </li>
+                );
+            }
+          } else {
+            drug.name !== "" &&
+              medications.push(
+                <li id={drug.rxcui} key={index}>
+                  <h5>{drug.name}</h5>
+                  <button onClick={addToCurrentMeds}>Add to my chart</button>
+                </li>
+              );
+          }
+        });
+        setFoundMeds(medications);
+        console.log(medications);
+      });
+  };
 
   return (
     <div className="bodyBox identifyBox">
       <div className="bodyBoxContent" onClick={togglePopUp}>
-        <h1 className="bodyBoxIdentify">Identify</h1>
+        <h1 className="bodyBoxIdentify">Find Medications</h1>
       </div>
       {isOpen && (
         <div className="popup-box">
@@ -63,7 +150,7 @@ const Identify = () => {
             <form
               className="identifyForm"
               onChange={handleChange}
-              onSubmit={(e) => fetchData(e)}
+              onSubmit={(e) => fetchByPill(e)}
             >
               <h4>Color</h4>
               <select name="color">
@@ -109,6 +196,18 @@ const Identify = () => {
               <br />
               <button type="submit">Search</button>
             </form>
+
+            <form
+              className="identifyForm"
+              onChange={handleChange}
+              onSubmit={(e) => fetchByName(e)}
+            >
+              <h4>Name and Strength</h4>
+              <input type="text" name="name" placeholder="name and strength" />
+              <button type="submit">Search</button>
+            </form>
+
+            <div>{medsList()}</div>
             <div className="foundMedsList">{foundMeds}</div>
             <span className="close-icon" onClick={togglePopUp}>
               x
@@ -119,4 +218,5 @@ const Identify = () => {
     </div>
   );
 };
+
 export default Identify;
