@@ -9,13 +9,18 @@ export function Dashboard() {
   const { user, signOut } = useAuth();
   const [activeItems, setActiveItems] = useState([]);
   const history = useHistory();
+  const [hoverOpen, setHoverOpen] = useState(false);
+
+  const toggleUserButton = () => {
+    setHoverOpen(!hoverOpen);
+  };
 
   useEffect(() => {
     async function returnUsername() {
       try {
         const { error, data } = await supabase
           .from("profiles")
-          .select("user_id, username")
+          .select("*")
           .eq("user_id", user?.id);
         if (error) setActiveItems(user?.email);
         if (data) setActiveItems(data[0].username);
@@ -23,6 +28,9 @@ export function Dashboard() {
         await supabase
           .from("profiles")
           .insert({ username: user?.email, user_id: user?.id });
+        await supabase.from("allergies").insert({ user_id: user?.id });
+        await supabase.from("doctors").insert({ user_id: user?.id });
+        await supabase.from("emergency_contact").insert({ user_id: user?.id });
         returnUsername();
       }
     }
@@ -36,13 +44,32 @@ export function Dashboard() {
     history.push("/login");
   }
 
+  async function handleProfilePage() {
+    history.push("/Profile");
+  }
+
   return (
     <div>
       <div className="headWrap">
         <h1>Medication doesn't have to be SCARY</h1>
         <h1>Pill Pouch</h1>
         <p>Welcome, {activeItems}!</p>
-        <button onClick={handleSignOut}>Sign out</button>
+        <div>
+          <input
+            onClick={toggleUserButton}
+            type="image"
+            className="delete_button"
+            title="Delete"
+            src="https://webstockreview.net/images/clipart-pen-pen-icon-15.png"
+            alt="delete button"
+          />
+          {hoverOpen && (
+            <div className="hoverDiv" onMouseLeave={toggleUserButton}>
+              <h5 onClick={handleSignOut}>Sign out</h5>
+              <h5 onClick={handleProfilePage}>Edit Profile</h5>
+            </div>
+          )}
+        </div>
       </div>
       <Body />
     </div>

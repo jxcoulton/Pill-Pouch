@@ -2,6 +2,8 @@ import axios from "axios";
 import React, { useState } from "react";
 import { supabase } from "../supabase";
 import { useAuth } from "../contexts/Auth";
+import Toastify from "toastify-js";
+import "toastify-js/src/toastify.css";
 
 const Identify = () => {
   const initialFormData = {
@@ -15,22 +17,35 @@ const Identify = () => {
   const [currentMeds, setCurrentMeds] = useState([]);
   const { user } = useAuth();
 
+  async function addMedication(e) {
+    const drugId = e.target.parentElement.id;
+    const drugName = e.target.previousElementSibling.innerHTML;
+    await supabase
+      .from("drugs")
+      .insert({ drug_name: drugName, rxcui: drugId, user_id: user?.id });
+    getUsersMeds();
+    Toastify({
+      text: `${drugName} has be removed`,
+      duration: 3000,
+    }).showToast();
+  }
+
+  async function getUsersMeds() {
+    try {
+      const { error, data } = await supabase
+        .from("drugs")
+        .select("*")
+        .eq("user_id", user?.id);
+      if (error) setCurrentMeds([]);
+      if (data) setCurrentMeds(data);
+    } catch {
+      setCurrentMeds([]);
+    }
+  }
+
   const togglePopUp = () => {
     setIsOpen(!isOpen);
     resetState();
-    // setFoundMeds([]);
-    async function getUsersMeds() {
-      try {
-        const { error, data } = await supabase
-          .from("drugs")
-          .select("drug_name, rxcui")
-          .eq("user_id", user?.id);
-        if (error) setCurrentMeds([]);
-        if (data) setCurrentMeds(data);
-      } catch {
-        setCurrentMeds([]);
-      }
-    }
     getUsersMeds();
   };
 
@@ -51,16 +66,7 @@ const Identify = () => {
   };
 
   const addToCurrentMeds = (e) => {
-    const drugId = e.target.parentElement.id;
-    const drugName = e.target.previousElementSibling.innerHTML;
-    async function addMedication() {
-      await supabase
-        .from("drugs")
-        .insert({ drug_name: drugName, rxcui: drugId, user_id: user?.id });
-    }
-    addMedication();
-    alert(`${drugName} added to your list of medications`);
-    setIsOpen(!isOpen);
+    addMedication(e);
   };
 
   const fetchByPill = (e) => {
@@ -88,18 +94,7 @@ const Identify = () => {
         });
         setFoundMeds(medications);
       });
-  };
-
-  const medsList = () => {
-    const medications = [];
-    currentMeds.forEach((med, index) => {
-      medications.push(
-        <li id={med.drug_id} key={index} className="currentMedsList">
-          <h5 value={index}>{med.drug_name}</h5>
-        </li>
-      );
-    });
-    return medications;
+    e.target.reset();
   };
 
   const fetchByName = (e) => {
@@ -137,6 +132,19 @@ const Identify = () => {
         setFoundMeds(medications);
         console.log(medications);
       });
+    e.target.reset();
+  };
+
+  const medsList = () => {
+    const medications = [];
+    currentMeds.forEach((med, index) => {
+      medications.push(
+        <li id={med.drug_id} key={index} className="currentMedsList">
+          <h5 value={index}>{med.drug_name}</h5>
+        </li>
+      );
+    });
+    return medications;
   };
 
   return (
@@ -196,7 +204,7 @@ const Identify = () => {
               <br />
               <button type="submit">Search</button>
             </form>
-
+            OR
             <form
               className="identifyForm"
               onChange={handleChange}
@@ -206,7 +214,6 @@ const Identify = () => {
               <input type="text" name="name" placeholder="name and strength" />
               <button type="submit">Search</button>
             </form>
-
             <div>{medsList()}</div>
             <div className="foundMedsList">{foundMeds}</div>
             <span className="close-icon" onClick={togglePopUp}>

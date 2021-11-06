@@ -147,6 +147,12 @@ body {
   align-items: center;
 }
 
+.hoverDiv {
+  width: 100px;
+  height: 100px;
+  padding: 10px;
+}
+
 li {
   list-style-type: none;
   display: flex;

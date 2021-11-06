@@ -9,21 +9,22 @@ const Interactions = () => {
   const [interactions, setInteractions] = useState([]);
   const { user } = useAuth();
 
+  async function getUsersMeds() {
+    try {
+      const { error, data } = await supabase
+        .from("drugs")
+        .select("*")
+        .eq("user_id", user?.id);
+      if (error) setCurrentMeds([]);
+      if (data) setCurrentMeds(data);
+    } catch {
+      setCurrentMeds([]);
+    }
+  }
+
   const togglePopUp = () => {
     setIsOpen(!isOpen);
     setInteractions();
-    async function getUsersMeds() {
-      try {
-        const { error, data } = await supabase
-          .from("drugs")
-          .select("drug_name, rxcui")
-          .eq("user_id", user?.id);
-        if (error) setCurrentMeds([]);
-        if (data) setCurrentMeds(data);
-      } catch {
-        setCurrentMeds([]);
-      }
-    }
     getUsersMeds();
   };
 

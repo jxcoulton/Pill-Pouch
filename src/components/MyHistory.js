@@ -1,49 +1,90 @@
 import React, { useState } from "react";
 import { useAuth } from "../contexts/Auth";
 import { supabase } from "../supabase";
+import Toastify from "toastify-js";
+import "toastify-js/src/toastify.css";
 
 const MyHistory = () => {
-  const initialUserInfo = [
-    {
-      username: null,
-      first_name: null,
-      last_name: null,
-    },
-  ];
   const [isOpen, setIsOpen] = useState(false);
   const { user } = useAuth();
   const [currentMeds, setCurrentMeds] = useState([]);
-  const [userInfo, setUserInfo] = useState(initialUserInfo);
+  const [userInfo, setUserInfo] = useState([]);
+  const [userAllergies, setUserAllergies] = useState([]);
+  const [userEmerContact, setUserEmerContact] = useState([]);
+  const [userDoctor, setUserDoctor] = useState([]);
+
+  async function getUsersMeds() {
+    try {
+      const { error, data } = await supabase
+        .from("drugs")
+        .select("*")
+        .eq("user_id", user?.id);
+      if (error) setCurrentMeds([]);
+      if (data) setCurrentMeds(data);
+    } catch {
+      setCurrentMeds([]);
+    }
+  }
+
+  async function getUserProfile() {
+    try {
+      const { error, data } = await supabase
+        .from("profiles")
+        .select("*")
+        .eq("user_id", user?.id);
+      if (error) setUserInfo([]);
+      if (data) setUserInfo(data[0]);
+    } catch {
+      setUserInfo([]);
+    }
+  }
+
+  async function getUserEmerContact() {
+    try {
+      const { error, data } = await supabase
+        .from("emergency_contact")
+        .select("*")
+        .eq("user_id", user?.id);
+      if (error) setUserEmerContact([]);
+      if (data) setUserEmerContact(data[0]);
+    } catch {
+      setUserEmerContact([]);
+    }
+  }
+
+  async function getUserAllergies() {
+    try {
+      const { error, data } = await supabase
+        .from("allergies")
+        .select("*")
+        .eq("user_id", user?.id);
+      if (error) setUserAllergies([]);
+      if (data) setUserAllergies(data);
+    } catch {
+      setUserAllergies([]);
+    }
+  }
+
+  async function getUserDoctor() {
+    try {
+      const { error, data } = await supabase
+        .from("doctors")
+        .select("*")
+        .eq("user_id", user?.id);
+      if (error) setUserDoctor([]);
+      if (data) setUserDoctor(data[0]);
+    } catch {
+      setUserDoctor([]);
+    }
+  }
 
   const togglePopUp = () => {
     setIsOpen(!isOpen);
-    async function getUsersMeds() {
-      try {
-        const { error, data } = await supabase
-          .from("drugs")
-          .select("user_id, drug_name, rxcui, drug_id")
-          .eq("user_id", user?.id);
-        if (error) setCurrentMeds([]);
-        if (data) setCurrentMeds(data);
-      } catch {
-        setCurrentMeds([]);
-      }
-    }
-
-    async function getUserProfile() {
-      try {
-        const { error, data } = await supabase
-          .from("profiles")
-          .select("user_id, username, first_name, last_name")
-          .eq("user_id", user?.id);
-        if (error) setUserInfo(initialUserInfo);
-        if (data) setUserInfo(data[0]);
-      } catch {
-        setUserInfo(initialUserInfo);
-      }
-    }
     getUsersMeds();
     getUserProfile();
+    getUserAllergies();
+    getUserDoctor();
+    getUserEmerContact();
   };
 
   const medsList = () => {
@@ -66,6 +107,19 @@ const MyHistory = () => {
     return medications;
   };
 
+  const allergyList = () => {
+    const allergies = [];
+    userAllergies.forEach((allergy, index) => {
+      allergies.push(
+        <li id={allergy.allergy_id} key={index} className="currentMedsList">
+          <h5 value={index}>{allergy.allergen}</h5>
+        </li>
+      );
+    });
+    return allergies;
+  };
+
+  console.log(userAllergies);
   async function deleteCurrentMed(e) {
     const drugId = e.target.parentElement.id;
     const drugName = e.target.previousElementSibling.innerHTML;
@@ -76,26 +130,18 @@ const MyHistory = () => {
       .eq("drug_id", drugId)
       .eq("user_id", user?.id);
     if (error) {
-      alert(`Sorry, try again later.`);
+      Toastify({
+        text: `something went wrong`,
+        duration: 3000,
+      }).showToast();
     } else {
-      alert(`${drugName} removed from chart`);
+      Toastify({
+        text: `${drugName} has be removed`,
+        duration: 3000,
+      }).showToast();
     }
-    setIsOpen(!isOpen);
+    getUsersMeds();
   }
-
-  const updateItem = async (newValue, columnName) => {
-    try {
-      const { error } = await supabase
-        .from("profiles")
-        .update({ columnName: newValue })
-        // .eq("user_id", user?.id)
-        .eq("user_id", user?.id); //matching id of row to update
-
-      if (error) throw error;
-    } catch (error) {
-      alert(error.error_description || error.message);
-    }
-  };
 
   return (
     <div className="bodyBox myHistoryBox">
@@ -105,44 +151,46 @@ const MyHistory = () => {
       {isOpen && (
         <div className="popup-box">
           <div className="box">
-            {<p>My Chart</p>}
-            <div>{medsList()}</div>
             <div>
+              <h3>My Rx's</h3>
+              {medsList()}
+            </div>
+            <div>
+              <h3>My Information</h3>
               <h5>
-                Username: {userInfo.username !== null && userInfo.username}
+                Name: {userInfo.full_name !== null ? userInfo.full_name : `N/A`}
               </h5>
-              <form>
-              <input placeholder="new username" />
-              <input
-                onClick={updateItem}
-                type="image"
-                className="delete_button"
-                title="Delete"
-                src="https://webstockreview.net/images/clipart-pen-pen-icon-15.png"
-                alt="delete button"
-              />
-              </form>
               <h5>
-                First Name:{" "}
-                {userInfo.first_name !== null && userInfo.first_name}
+                Allergies:{" "}
+                {userAllergies.allergen !== null ? allergyList() : `N/A`}
               </h5>
-              <input
-                type="image"
-                className="delete_button"
-                title="Delete"
-                src="https://webstockreview.net/images/clipart-pen-pen-icon-15.png"
-                alt="delete button"
-              />
+            </div>
+            <div>
+              <h3>My Contacts</h3>
               <h5>
-                Last Name: {userInfo.last_name !== null && userInfo.last_name}
+                Emergency Contact:{" "}
+                {userEmerContact.ec_full_name !== null ? (
+                  <div>
+                    {userEmerContact.ec_full_name}
+                    {userEmerContact.ec_relationship}
+                    {userEmerContact.ec_phone}
+                  </div>
+                ) : (
+                  `N/A`
+                )}
               </h5>
-              <input
-                type="image"
-                className="delete_button"
-                title="Delete"
-                src="https://webstockreview.net/images/clipart-pen-pen-icon-15.png"
-                alt="delete button"
-              />
+              <h5>
+                Primary Doctor:{" "}
+                {userDoctor.dr_name !== null ? (
+                  <div>
+                    <p>{userDoctor.dr_name}</p>
+                    <p>{userDoctor.office_name}</p>
+                    <p>{userDoctor.dr_phone}</p>
+                  </div>
+                ) : (
+                  `N/A`
+                )}
+              </h5>
             </div>
             <span className="close-icon" onClick={togglePopUp}>
               x

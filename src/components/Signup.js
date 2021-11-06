@@ -1,6 +1,8 @@
 import { useRef } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { useAuth } from "../contexts/Auth";
+import Toastify from "toastify-js";
+import "toastify-js/src/toastify.css";
 
 export function Signup() {
   const emailRef = useRef();
@@ -17,7 +19,10 @@ export function Signup() {
     const { error } = await signUp({ email, password });
 
     if (error) {
-      alert("error signing in");
+      Toastify({
+        text: `error signing up`,
+        duration: 3000,
+      }).showToast();
     } else {
       // Redirect user to Dashboard
       history.push("/");
