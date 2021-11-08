@@ -17,7 +17,7 @@ export function App() {
             <PrivateRoute exact path="/" component={Dashboard} />
             <Route path="/signup" component={Signup} />
             <Route path="/login" component={Login} />
-            <Route path="/profile" component={Profile} />
+            <PrivateRoute path="/profile" component={Profile} />
           </Switch>
         </AuthProvider>
       </Router>

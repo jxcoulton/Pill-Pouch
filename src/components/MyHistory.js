@@ -11,7 +11,6 @@ const MyHistory = () => {
   const [userInfo, setUserInfo] = useState([]);
   const [userAllergies, setUserAllergies] = useState([]);
   const [userEmerContact, setUserEmerContact] = useState([]);
-  const [userDoctor, setUserDoctor] = useState([]);
 
   async function getUsersMeds() {
     try {
@@ -65,25 +64,11 @@ const MyHistory = () => {
     }
   }
 
-  async function getUserDoctor() {
-    try {
-      const { error, data } = await supabase
-        .from("doctors")
-        .select("*")
-        .eq("user_id", user?.id);
-      if (error) setUserDoctor([]);
-      if (data) setUserDoctor(data[0]);
-    } catch {
-      setUserDoctor([]);
-    }
-  }
-
   const togglePopUp = () => {
     setIsOpen(!isOpen);
     getUsersMeds();
     getUserProfile();
     getUserAllergies();
-    getUserDoctor();
     getUserEmerContact();
   };
 
@@ -93,14 +78,6 @@ const MyHistory = () => {
       medications.push(
         <li id={med.drug_id} key={index} className="currentMedsList">
           <h5 value={index}>{med.drug_name}</h5>
-          <input
-            type="image"
-            className="delete_button"
-            onClick={deleteCurrentMed}
-            title="Delete"
-            src="https://www.nicepng.com/png/detail/207-2079285_delete-comments-delete-icon-transparent.png"
-            alt="delete button"
-          />
         </li>
       );
     });
@@ -119,30 +96,8 @@ const MyHistory = () => {
     return allergies;
   };
 
-  console.log(userAllergies);
-  async function deleteCurrentMed(e) {
-    const drugId = e.target.parentElement.id;
-    const drugName = e.target.previousElementSibling.innerHTML;
-    console.log(drugName);
-    const { error } = await supabase
-      .from("drugs")
-      .delete()
-      .eq("drug_id", drugId)
-      .eq("user_id", user?.id);
-    if (error) {
-      Toastify({
-        text: `something went wrong`,
-        duration: 3000,
-      }).showToast();
-    } else {
-      Toastify({
-        text: `${drugName} has be removed`,
-        duration: 3000,
-      }).showToast();
-    }
-    getUsersMeds();
-  }
-
+  const handlePrint = () => { };
+  
   return (
     <div className="bodyBox myHistoryBox">
       <div className="bodyBoxContent" onClick={togglePopUp}>
@@ -150,10 +105,13 @@ const MyHistory = () => {
       </div>
       {isOpen && (
         <div className="popup-box">
-          <div className="box">
+          <div className="box" id="printWindow">
             <div>
               <h3>My Rx's</h3>
-              {medsList()}
+              <h5>
+                Medications:{" "}
+                {Object.keys(currentMeds).length !== 0 ? medsList() : `N/A`}
+              </h5>
             </div>
             <div>
               <h3>My Information</h3>
@@ -162,7 +120,9 @@ const MyHistory = () => {
               </h5>
               <h5>
                 Allergies:{" "}
-                {userAllergies.allergen !== null ? allergyList() : `N/A`}
+                {Object.keys(userAllergies).length !== 0
+                  ? allergyList()
+                  : `N/A`}
               </h5>
             </div>
             <div>
@@ -171,27 +131,16 @@ const MyHistory = () => {
                 Emergency Contact:{" "}
                 {userEmerContact.ec_full_name !== null ? (
                   <div>
-                    {userEmerContact.ec_full_name}
-                    {userEmerContact.ec_relationship}
-                    {userEmerContact.ec_phone}
-                  </div>
-                ) : (
-                  `N/A`
-                )}
-              </h5>
-              <h5>
-                Primary Doctor:{" "}
-                {userDoctor.dr_name !== null ? (
-                  <div>
-                    <p>{userDoctor.dr_name}</p>
-                    <p>{userDoctor.office_name}</p>
-                    <p>{userDoctor.dr_phone}</p>
+                    <h5>{userEmerContact.ec_full_name}</h5>
+                    <h5>{userEmerContact.ec_relationship}</h5>
+                    <h5>{userEmerContact.ec_phone}</h5>
                   </div>
                 ) : (
                   `N/A`
                 )}
               </h5>
             </div>
+            <button onChange={handlePrint}>Print Chart</button>
             <span className="close-icon" onClick={togglePopUp}>
               x
             </span>

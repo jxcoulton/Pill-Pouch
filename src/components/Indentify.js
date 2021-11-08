@@ -25,7 +25,7 @@ const Identify = () => {
       .insert({ drug_name: drugName, rxcui: drugId, user_id: user?.id });
     getUsersMeds();
     Toastify({
-      text: `${drugName} has be removed`,
+      text: `${drugName} has be added`,
       duration: 3000,
     }).showToast();
   }
@@ -68,6 +68,28 @@ const Identify = () => {
   const addToCurrentMeds = (e) => {
     addMedication(e);
   };
+
+  async function deleteCurrentMed(e) {
+    const drugId = e.target.parentElement.id;
+    const drugName = e.target.previousElementSibling.innerHTML;
+    const { error } = await supabase
+      .from("drugs")
+      .delete()
+      .eq("drug_id", drugId)
+      .eq("user_id", user?.id);
+    if (error) {
+      Toastify({
+        text: `something went wrong`,
+        duration: 3000,
+      }).showToast();
+    } else {
+      Toastify({
+        text: `${drugName} has be removed`,
+        duration: 3000,
+      }).showToast();
+    }
+    getUsersMeds();
+  }
 
   const fetchByPill = (e) => {
     e.preventDefault();
@@ -130,7 +152,6 @@ const Identify = () => {
           }
         });
         setFoundMeds(medications);
-        console.log(medications);
       });
     e.target.reset();
   };
@@ -141,6 +162,14 @@ const Identify = () => {
       medications.push(
         <li id={med.drug_id} key={index} className="currentMedsList">
           <h5 value={index}>{med.drug_name}</h5>
+          <input
+            type="image"
+            className="delete_button"
+            onClick={deleteCurrentMed}
+            title="Delete"
+            src="https://www.nicepng.com/png/detail/207-2079285_delete-comments-delete-icon-transparent.png"
+            alt="delete button"
+          />
         </li>
       );
     });

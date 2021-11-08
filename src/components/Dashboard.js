@@ -11,10 +11,6 @@ export function Dashboard() {
   const history = useHistory();
   const [hoverOpen, setHoverOpen] = useState(false);
 
-  const toggleUserButton = () => {
-    setHoverOpen(!hoverOpen);
-  };
-
   useEffect(() => {
     async function returnUsername() {
       try {
@@ -28,14 +24,20 @@ export function Dashboard() {
         await supabase
           .from("profiles")
           .insert({ username: user?.email, user_id: user?.id });
-        await supabase.from("allergies").insert({ user_id: user?.id });
-        await supabase.from("doctors").insert({ user_id: user?.id });
         await supabase.from("emergency_contact").insert({ user_id: user?.id });
         returnUsername();
       }
     }
     returnUsername();
   }, []);
+
+  const toggleUserButton = () => {
+    setHoverOpen(!hoverOpen);
+  };
+
+  const toggleUserButtonFalse = () => {
+    setHoverOpen(false);
+  };
 
   async function handleSignOut() {
     // Ends user session
@@ -64,7 +66,7 @@ export function Dashboard() {
             alt="delete button"
           />
           {hoverOpen && (
-            <div className="hoverDiv" onMouseLeave={toggleUserButton}>
+            <div className="hoverDiv" onMouseLeave={toggleUserButtonFalse}>
               <h5 onClick={handleSignOut}>Sign out</h5>
               <h5 onClick={handleProfilePage}>Edit Profile</h5>
             </div>
