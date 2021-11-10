@@ -7,7 +7,7 @@ import "toastify-js/src/toastify.css";
 export function Signup() {
   const emailRef = useRef();
   const passwordRef = useRef();
-  const { signUp } = useAuth();
+  const { user, signUp } = useAuth();
   const history = useHistory();
 
   async function handleSubmit(e) {
@@ -15,7 +15,6 @@ export function Signup() {
     const email = emailRef.current.value;
     const password = passwordRef.current.value;
 
-    // Calls `signUp` function from the context
     const { error } = await signUp({ email, password });
 
     if (error) {
@@ -24,7 +23,6 @@ export function Signup() {
         duration: 3000,
       }).showToast();
     } else {
-      // Redirect user to Dashboard
       history.push("/");
     }
   }

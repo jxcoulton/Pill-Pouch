@@ -5,7 +5,7 @@ import { useAuth } from "../contexts/Auth";
 import Toastify from "toastify-js";
 import "toastify-js/src/toastify.css";
 
-const Identify = () => {
+const Identify = ({setStateChange, stateChange, currentMeds}) => {
   const initialFormData = {
     color: "",
     imprint: "",
@@ -14,61 +14,46 @@ const Identify = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [foundMeds, setFoundMeds] = useState([]);
   const [formData, setFormData] = useState(initialFormData);
-  const [currentMeds, setCurrentMeds] = useState([]);
   const { user } = useAuth();
 
+  const togglePopUp = () => {
+    setIsOpen(!isOpen);
+    resetState();
+  };
+  
+  const handleChange = (e) => {
+    const value =
+    e.target.value === ""
+    ? ""
+        : `&${e.target.name}=${e.target.value.replace(/ /g, "%20")}`;
+        setFormData({
+          ...formData,
+      [e.target.name]: value,
+    });
+  };
+  
+  const resetState = () => {
+    setFormData(initialFormData);
+    setFoundMeds([]);
+  };
+  
+  const addToCurrentMeds = (e) => {
+    addMedication(e);
+  };
+  
   async function addMedication(e) {
     const drugId = e.target.parentElement.id;
     const drugName = e.target.previousElementSibling.innerHTML;
     await supabase
       .from("drugs")
       .insert({ drug_name: drugName, rxcui: drugId, user_id: user?.id });
-    getUsersMeds();
     Toastify({
       text: `${drugName} has be added`,
       duration: 3000,
     }).showToast();
+    setStateChange(!stateChange);
   }
-
-  async function getUsersMeds() {
-    try {
-      const { error, data } = await supabase
-        .from("drugs")
-        .select("*")
-        .eq("user_id", user?.id);
-      if (error) setCurrentMeds([]);
-      if (data) setCurrentMeds(data);
-    } catch {
-      setCurrentMeds([]);
-    }
-  }
-
-  const togglePopUp = () => {
-    setIsOpen(!isOpen);
-    resetState();
-    getUsersMeds();
-  };
-
-  const handleChange = (e) => {
-    const value =
-      e.target.value === ""
-        ? ""
-        : `&${e.target.name}=${e.target.value.replace(/ /g, "%20")}`;
-    setFormData({
-      ...formData,
-      [e.target.name]: value,
-    });
-  };
-
-  const resetState = () => {
-    setFormData(initialFormData);
-    setFoundMeds([]);
-  };
-
-  const addToCurrentMeds = (e) => {
-    addMedication(e);
-  };
-
+  
   async function deleteCurrentMed(e) {
     const drugId = e.target.parentElement.id;
     const drugName = e.target.previousElementSibling.innerHTML;
@@ -88,7 +73,7 @@ const Identify = () => {
         duration: 3000,
       }).showToast();
     }
-    getUsersMeds();
+    setStateChange(!stateChange);
   }
 
   const fetchByPill = (e) => {
@@ -256,3 +241,4 @@ const Identify = () => {
 };
 
 export default Identify;
+

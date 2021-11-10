@@ -1,75 +1,13 @@
-import React, { useState } from "react";
-import { useAuth } from "../contexts/Auth";
-import { supabase } from "../supabase";
-import Toastify from "toastify-js";
+import React, { useState} from "react";
+
 import "toastify-js/src/toastify.css";
 
-const MyHistory = () => {
+
+const MyHistory = ({currentMeds, userAllergies, userInfo, userEmerContact}) => {
   const [isOpen, setIsOpen] = useState(false);
-  const { user } = useAuth();
-  const [currentMeds, setCurrentMeds] = useState([]);
-  const [userInfo, setUserInfo] = useState([]);
-  const [userAllergies, setUserAllergies] = useState([]);
-  const [userEmerContact, setUserEmerContact] = useState([]);
-
-  async function getUsersMeds() {
-    try {
-      const { error, data } = await supabase
-        .from("drugs")
-        .select("*")
-        .eq("user_id", user?.id);
-      if (error) setCurrentMeds([]);
-      if (data) setCurrentMeds(data);
-    } catch {
-      setCurrentMeds([]);
-    }
-  }
-
-  async function getUserProfile() {
-    try {
-      const { error, data } = await supabase
-        .from("profiles")
-        .select("*")
-        .eq("user_id", user?.id);
-      if (error) setUserInfo([]);
-      if (data) setUserInfo(data[0]);
-    } catch {
-      setUserInfo([]);
-    }
-  }
-
-  async function getUserEmerContact() {
-    try {
-      const { error, data } = await supabase
-        .from("emergency_contact")
-        .select("*")
-        .eq("user_id", user?.id);
-      if (error) setUserEmerContact([]);
-      if (data) setUserEmerContact(data[0]);
-    } catch {
-      setUserEmerContact([]);
-    }
-  }
-
-  async function getUserAllergies() {
-    try {
-      const { error, data } = await supabase
-        .from("allergies")
-        .select("*")
-        .eq("user_id", user?.id);
-      if (error) setUserAllergies([]);
-      if (data) setUserAllergies(data);
-    } catch {
-      setUserAllergies([]);
-    }
-  }
 
   const togglePopUp = () => {
     setIsOpen(!isOpen);
-    getUsersMeds();
-    getUserProfile();
-    getUserAllergies();
-    getUserEmerContact();
   };
 
   const medsList = () => {
@@ -96,8 +34,6 @@ const MyHistory = () => {
     return allergies;
   };
 
-  const handlePrint = () => { };
-  
   return (
     <div className="bodyBox myHistoryBox">
       <div className="bodyBoxContent" onClick={togglePopUp}>
@@ -116,7 +52,7 @@ const MyHistory = () => {
             <div>
               <h3>My Information</h3>
               <h5>
-                Name: {userInfo.full_name !== null ? userInfo.full_name : `N/A`}
+                Name: {userInfo[0].full_name !== null ? userInfo[0].full_name : `N/A`}
               </h5>
               <h5>
                 Allergies:{" "}
@@ -140,7 +76,6 @@ const MyHistory = () => {
                 )}
               </h5>
             </div>
-            <button onChange={handlePrint}>Print Chart</button>
             <span className="close-icon" onClick={togglePopUp}>
               x
             </span>

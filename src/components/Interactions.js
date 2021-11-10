@@ -1,31 +1,15 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { supabase } from "../supabase";
-import { useAuth } from "../contexts/Auth";
 
-const Interactions = () => {
+
+
+const Interactions = ({currentMeds}) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [currentMeds, setCurrentMeds] = useState([]);
   const [interactions, setInteractions] = useState([]);
-  const { user } = useAuth();
-
-  async function getUsersMeds() {
-    try {
-      const { error, data } = await supabase
-        .from("drugs")
-        .select("*")
-        .eq("user_id", user?.id);
-      if (error) setCurrentMeds([]);
-      if (data) setCurrentMeds(data);
-    } catch {
-      setCurrentMeds([]);
-    }
-  }
 
   const togglePopUp = () => {
     setIsOpen(!isOpen);
     setInteractions();
-    getUsersMeds();
   };
 
   function findProp(obj, prop) {
@@ -57,7 +41,7 @@ const Interactions = () => {
 
   const submitCompare = () => {
     let rxcuiString = "";
-    currentMeds.forEach((drug, index) => {
+    currentMeds.forEach((drug) => {
       rxcuiString += `${drug.rxcui}+`;
     });
     axios
