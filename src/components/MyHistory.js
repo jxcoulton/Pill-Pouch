@@ -1,9 +1,11 @@
-import React, { useState} from "react";
-
+import React, { useState, useContext } from "react";
+import UserDataContext from "../contexts/userData";
 import "toastify-js/src/toastify.css";
 
+const MyHistory = () => {
+  const { currentMeds, userAllergies, userInfo, userEmerContact } =
+    useContext(UserDataContext);
 
-const MyHistory = ({currentMeds, userAllergies, userInfo, userEmerContact}) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const togglePopUp = () => {
@@ -14,9 +16,16 @@ const MyHistory = ({currentMeds, userAllergies, userInfo, userEmerContact}) => {
     const medications = [];
     currentMeds.forEach((med, index) => {
       medications.push(
-        <li id={med.drug_id} key={index} className="currentMedsList">
-          <h5 value={index}>{med.drug_name}</h5>
-        </li>
+        // <li id={med.drug_id} key={index} className="currentMedsList">
+        <p
+          className="currentMedsList"
+          id={med.drug_id}
+          key={index}
+          value={index}
+        >
+          {med.drug_name}
+        </p>
+        // </li>
       );
     });
     return medications;
@@ -26,12 +35,29 @@ const MyHistory = ({currentMeds, userAllergies, userInfo, userEmerContact}) => {
     const allergies = [];
     userAllergies.forEach((allergy, index) => {
       allergies.push(
-        <li id={allergy.allergy_id} key={index} className="currentMedsList">
-          <h5 value={index}>{allergy.allergen}</h5>
-        </li>
+        // <li id={allergy.allergy_id} key={index} className="currentMedsList">
+        <p
+          className="currentMedsList"
+          id={allergy.allergy_id}
+          key={index}
+          value={index}
+        >
+          {allergy.allergen}
+        </p>
+        // </li>
       );
     });
     return allergies;
+  };
+
+  const handlePrint = () => {
+    const printContent = document.getElementById("printWindow");
+    let openWindow = window.open("");
+    openWindow.document.write(printContent.innerHTML);
+    openWindow.document.close();
+    openWindow.focus();
+    openWindow.print();
+    openWindow.close();
   };
 
   return (
@@ -41,44 +67,52 @@ const MyHistory = ({currentMeds, userAllergies, userInfo, userEmerContact}) => {
       </div>
       {isOpen && (
         <div className="popup-box">
-          <div className="box" id="printWindow">
-            <div>
-              <h3>My Rx's</h3>
-              <h5>
-                Medications:{" "}
-                {Object.keys(currentMeds).length !== 0 ? medsList() : `N/A`}
-              </h5>
-            </div>
-            <div>
-              <h3>My Information</h3>
-              <h5>
-                Name: {userInfo[0].full_name !== null ? userInfo[0].full_name : `N/A`}
-              </h5>
-              <h5>
-                Allergies:{" "}
-                {Object.keys(userAllergies).length !== 0
-                  ? allergyList()
-                  : `N/A`}
-              </h5>
-            </div>
-            <div>
-              <h3>My Contacts</h3>
-              <h5>
-                Emergency Contact:{" "}
-                {userEmerContact.ec_full_name !== null ? (
-                  <div>
-                    <h5>{userEmerContact.ec_full_name}</h5>
-                    <h5>{userEmerContact.ec_relationship}</h5>
-                    <h5>{userEmerContact.ec_phone}</h5>
-                  </div>
-                ) : (
-                  `N/A`
-                )}
-              </h5>
+          <div className="box">
+            <div id="printWindow">
+              <div>
+                <h3>My Rx's</h3>
+                <h5>
+                  Medications:{" "}
+                  {Object.keys(currentMeds).length !== 0 ? medsList() : `N/A`}
+                </h5>
+              </div>
+              <div>
+                <h3>My Information</h3>
+                <h5>
+                  Name:{" "}
+                  {userInfo[0].full_name !== null
+                    ? userInfo[0].full_name
+                    : `N/A`}
+                </h5>
+                <h5>
+                  Allergies:{" "}
+                  {Object.keys(userAllergies).length !== 0
+                    ? allergyList()
+                    : `N/A`}
+                </h5>
+              </div>
+              <div>
+                <h3>My Contacts</h3>
+                <h5>
+                  Emergency Contact:{" "}
+                  {userEmerContact.ec_full_name !== null ? (
+                    <div>
+                      <h5>{userEmerContact.ec_full_name}</h5>
+                      <h5>{userEmerContact.ec_relationship}</h5>
+                      <h5>{userEmerContact.ec_phone}</h5>
+                    </div>
+                  ) : (
+                    `N/A`
+                  )}
+                </h5>
+              </div>
             </div>
             <span className="close-icon" onClick={togglePopUp}>
               x
             </span>
+            <p>
+              It is recommended that you <button onClick={handlePrint}>Print</button> a copy to keep on you and include any medical conditions
+            </p>
           </div>
         </div>
       )}

@@ -4,14 +4,14 @@ import Identify from "./Indentify";
 import MyHistory from "./MyHistory";
 import Interactions from "./Interactions";
 
-const Body = ( {currentMeds, userInfo, stateChange, setStateChange, userEmerContact, userAllergies}) => {
+const Body = () => {
   return (
     <>
       <div className="bodyWrap">
-        <Resources/>
-        <Identify  currentMeds={currentMeds} stateChange={stateChange} setStateChange={setStateChange}/>
-        <Interactions currentMeds={currentMeds} />
-        <MyHistory currentMeds={currentMeds} userInfo={userInfo} userEmerContact={userEmerContact} userAllergies={userAllergies}/>
+        <Resources />
+        <Identify />
+        <Interactions />
+        <MyHistory />
       </div>
     </>
   );

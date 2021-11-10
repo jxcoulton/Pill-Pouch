@@ -4,6 +4,11 @@ body {
   background-color: #e5e5e5;
 }
 
+footer {
+  background-color: lightgray;
+  height: 20vh;
+}
+
 .wrapper {
   display: flex;
   flex-direction: column;
@@ -163,6 +168,42 @@ li {
 h5 {
   /* max-width: 200px; */
   margin-bottom: 2px;
+}
+
+svg {
+  width: 3.75em;
+  transform-origin: center;
+  animation: rotate 2s linear infinite;
+}
+
+circle {
+  fill: none;
+  stroke: #a6d0e8;
+  stroke-width: 2;
+  stroke-dasharray: 1, 200;
+  stroke-dashoffset: 0;
+  stroke-linecap: round;
+  animation: dash 1.5s ease-in-out infinite;
+}
+
+@keyframes rotate {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes dash {
+  0% {
+    stroke-dasharray: 1, 200;
+    stroke-dashoffset: 0;
+  }
+  50% {
+    stroke-dasharray: 90, 200;
+    stroke-dashoffset: -35px;
+  }
+  100% {
+    stroke-dashoffset: -125px;
+  }
 }
 
 @media only screen and (max-width: 700px) {

@@ -1,11 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import axios from "axios";
+import UserDataContext from "../contexts/userData";
+import Loading from "./Loading";
 
+const Interactions = () => {
+  const { currentMeds } = useContext(UserDataContext);
 
-
-const Interactions = ({currentMeds}) => {
   const [isOpen, setIsOpen] = useState(false);
   const [interactions, setInteractions] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const togglePopUp = () => {
     setIsOpen(!isOpen);
@@ -40,6 +43,7 @@ const Interactions = ({currentMeds}) => {
   };
 
   const submitCompare = () => {
+    setLoading(true);
     let rxcuiString = "";
     currentMeds.forEach((drug) => {
       rxcuiString += `${drug.rxcui}+`;
@@ -61,6 +65,7 @@ const Interactions = ({currentMeds}) => {
             interactionList.push(<p key={index}>{detail}</p>);
           }
         });
+        setLoading(false);
         setInteractions(interactionList);
       });
   };
@@ -78,7 +83,7 @@ const Interactions = ({currentMeds}) => {
             </span>
             <p>Interactions</p>
             {medsList()}
-            {interactions}
+            {loading ? <Loading /> : interactions}
             <button onClick={submitCompare}>Compare</button>
           </div>
         </div>

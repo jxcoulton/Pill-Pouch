@@ -1,10 +1,17 @@
-import { useRef } from "react";
+import { useRef, useContext, useEffect } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { useAuth } from "../contexts/Auth";
 import Toastify from "toastify-js";
 import "toastify-js/src/toastify.css";
+import UserDataContext from "../contexts/userData";
 
 export function Login() {
+  const { getUserProfile } = useContext(UserDataContext);
+
+  useEffect(() => {
+    getUserProfile();
+  }, []);
+
   const emailRef = useRef();
   const passwordRef = useRef();
 
@@ -14,10 +21,9 @@ export function Login() {
 
   async function handleSubmit(e) {
     e.preventDefault();
-    // Get email and password input values
     const email = emailRef.current.value;
     const password = passwordRef.current.value;
-    // Calls `signIn` function from the context
+
     const { error } = await signIn({ email, password });
     if (error) {
       Toastify({
@@ -25,7 +31,6 @@ export function Login() {
         duration: 3000,
       }).showToast();
     } else {
-      // Redirect user to Dashboard
       history.push("/");
     }
   }
@@ -34,7 +39,7 @@ export function Login() {
     <>
       <div className="headWrap">
         <h1>Medication doesn't have to be SCARY</h1>
-        <h1>Pill Pouch</h1>
+        <h1>Pill-Pal</h1>
       </div>
       <form onSubmit={handleSubmit}>
         <label htmlFor="input-email">Email</label>
@@ -51,6 +56,7 @@ export function Login() {
       <p>
         Don't have an account? <Link to="/signup">Sign Up</Link>
       </p>
+      <p>Forgot password?</p>
     </>
   );
 }

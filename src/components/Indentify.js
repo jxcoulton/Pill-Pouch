@@ -1,11 +1,16 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { supabase } from "../supabase";
 import { useAuth } from "../contexts/Auth";
 import Toastify from "toastify-js";
 import "toastify-js/src/toastify.css";
+import UserDataContext from "../contexts/userData";
+import Loading from "./Loading";
 
-const Identify = ({setStateChange, stateChange, currentMeds}) => {
+const Identify = () => {
+  const { setStateChange, stateChange, currentMeds, setCurrentMeds } =
+    useContext(UserDataContext);
+
   const initialFormData = {
     color: "",
     imprint: "",
@@ -14,34 +19,37 @@ const Identify = ({setStateChange, stateChange, currentMeds}) => {
   const [isOpen, setIsOpen] = useState(false);
   const [foundMeds, setFoundMeds] = useState([]);
   const [formData, setFormData] = useState(initialFormData);
+  const [loading, setLoading] = useState(false);
   const { user } = useAuth();
 
   const togglePopUp = () => {
     setIsOpen(!isOpen);
     resetState();
   };
-  
+
   const handleChange = (e) => {
     const value =
-    e.target.value === ""
-    ? ""
+      e.target.value === ""
+        ? ""
         : `&${e.target.name}=${e.target.value.replace(/ /g, "%20")}`;
-        setFormData({
-          ...formData,
+    setFormData({
+      ...formData,
       [e.target.name]: value,
     });
   };
-  
+
   const resetState = () => {
     setFormData(initialFormData);
     setFoundMeds([]);
   };
-  
+
   const addToCurrentMeds = (e) => {
     addMedication(e);
   };
-  
+
   async function addMedication(e) {
+    setLoading(true);
+    setFoundMeds([])
     const drugId = e.target.parentElement.id;
     const drugName = e.target.previousElementSibling.innerHTML;
     await supabase
@@ -51,10 +59,13 @@ const Identify = ({setStateChange, stateChange, currentMeds}) => {
       text: `${drugName} has be added`,
       duration: 3000,
     }).showToast();
+    setCurrentMeds([]);
+    setLoading(false);
     setStateChange(!stateChange);
   }
-  
+
   async function deleteCurrentMed(e) {
+    setLoading(true);
     const drugId = e.target.parentElement.id;
     const drugName = e.target.previousElementSibling.innerHTML;
     const { error } = await supabase
@@ -73,6 +84,8 @@ const Identify = ({setStateChange, stateChange, currentMeds}) => {
         duration: 3000,
       }).showToast();
     }
+    setCurrentMeds([]);
+    setLoading(false);
     setStateChange(!stateChange);
   }
 
@@ -228,7 +241,8 @@ const Identify = ({setStateChange, stateChange, currentMeds}) => {
               <input type="text" name="name" placeholder="name and strength" />
               <button type="submit">Search</button>
             </form>
-            <div>{medsList()}</div>
+            {/* <div>{medsList()}</div> */}
+            <div>{loading ? <Loading /> : medsList()}</div>
             <div className="foundMedsList">{foundMeds}</div>
             <span className="close-icon" onClick={togglePopUp}>
               x
@@ -241,4 +255,3 @@ const Identify = ({setStateChange, stateChange, currentMeds}) => {
 };
 
 export default Identify;
-

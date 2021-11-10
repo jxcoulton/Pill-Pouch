@@ -7,7 +7,7 @@ import "toastify-js/src/toastify.css";
 export function Signup() {
   const emailRef = useRef();
   const passwordRef = useRef();
-  const { user, signUp } = useAuth();
+  const { signUp } = useAuth();
   const history = useHistory();
 
   async function handleSubmit(e) {
@@ -31,7 +31,7 @@ export function Signup() {
     <>
       <div className="headWrap">
         <h1>Medication doesn't have to be SCARY</h1>
-        <h1>Pill Pouch</h1>
+        <h1>Pill-Pal</h1>
       </div>
       <form onSubmit={handleSubmit}>
         <label htmlFor="input-email">Email</label>
