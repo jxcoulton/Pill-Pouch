@@ -49,7 +49,7 @@ const Identify = () => {
 
   async function addMedication(e) {
     setLoading(true);
-    setFoundMeds([])
+    setFoundMeds([]);
     const drugId = e.target.parentElement.id;
     const drugName = e.target.previousElementSibling.innerHTML;
     await supabase
@@ -66,6 +66,7 @@ const Identify = () => {
 
   async function deleteCurrentMed(e) {
     setLoading(true);
+    setFoundMeds([]);
     const drugId = e.target.parentElement.id;
     const drugName = e.target.previousElementSibling.innerHTML;
     const { error } = await supabase

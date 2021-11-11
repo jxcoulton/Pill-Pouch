@@ -1,6 +1,6 @@
 import React from "react";
 import Resources from "./Resources";
-import Identify from "./Indentify";
+import Identify from "./Identify";
 import MyHistory from "./MyHistory";
 import Interactions from "./Interactions";
 
