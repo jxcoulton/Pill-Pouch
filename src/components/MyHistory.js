@@ -42,7 +42,7 @@ const MyHistory = () => {
           key={index}
           value={index}
         >
-          {allergy.allergen}
+          - {allergy.allergen}
         </p>
         // </li>
       );
@@ -61,23 +61,30 @@ const MyHistory = () => {
   };
 
   return (
-    <div className="bodyBox myHistoryBox">
-      <div className="bodyBoxContent" onClick={togglePopUp}>
-        <h1 className="bodyBoxMyHistory">My History</h1>
+    <div className="bodyBox my-history-box">
+      <div className="body-box-content" onClick={togglePopUp}>
+        <img
+          className="box-image"
+          alt="resources icon"
+          src="http://cdn.onlinewebfonts.com/svg/img_411433.png"
+        />
+        <h1 className="bodyBoxMyHistory">MY HISTORY</h1>
       </div>
       {isOpen && (
         <div className="popup-box">
-          <div className="box">
-            <div id="printWindow">
-              <div>
+          <div className="box my-history-pop-up">
+            <div id="printWindow" className="my-history-body">
+              <div className="my-history-sections">
                 <h3>My Rx's</h3>
+                <div className="my-history-box-line"></div>
                 <h5>
                   Medications:{" "}
                   {Object.keys(currentMeds).length !== 0 ? medsList() : `N/A`}
                 </h5>
               </div>
-              <div>
+              <div className="my-history-sections">
                 <h3>My Information</h3>
+                <div className="my-history-box-line"></div>
                 <h5>
                   Name:{" "}
                   {userInfo[0].full_name !== null
@@ -91,12 +98,13 @@ const MyHistory = () => {
                     : `N/A`}
                 </h5>
               </div>
-              <div>
+              <div className="my-history-sections">
                 <h3>My Contacts</h3>
+                <div className="my-history-box-line"></div>
                 <h5>
                   Emergency Contact:{" "}
                   {userEmerContact.ec_full_name !== null ? (
-                    <div>
+                    <div className="ec-info">
                       <h5>{userEmerContact.ec_full_name}</h5>
                       <h5>{userEmerContact.ec_relationship}</h5>
                       <h5>{userEmerContact.ec_phone}</h5>
@@ -108,10 +116,16 @@ const MyHistory = () => {
               </div>
             </div>
             <span className="close-icon" onClick={togglePopUp}>
-              x
+              <img
+                className="close-icon-img"
+                alt="close button"
+                src="http://cdn.onlinewebfonts.com/svg/download_118699.png"
+              />
             </span>
             <p>
-              It is recommended that you <button onClick={handlePrint}>Print</button> a copy to keep on you and include any medical conditions
+              It is recommended that you{" "}
+              <button onClick={handlePrint}>Print</button> a copy to keep on you
+              and include any medical conditions
             </p>
           </div>
         </div>

@@ -66,25 +66,45 @@ const Interactions = () => {
           }
         });
         setLoading(false);
-        setInteractions(interactionList);
+        setInteractions(
+          <div className="interaction-pop-up">
+            <h1>Results</h1>
+            <div className="interaction-box-line"></div>
+            <div className="interaction-list-box">{interactionList}</div>
+          </div>
+        );
       });
   };
 
   return (
-    <div className="bodyBox interactionsBox">
-      <div className="bodyBoxContent" onClick={togglePopUp}>
-        <h1 className="bodyBoxInteractions">Interactions</h1>
+    <div className="bodyBox interaction-box">
+      <div className="body-box-content" onClick={togglePopUp}>
+        <img
+          className="box-image"
+          alt="resources icon"
+          src="http://cdn.onlinewebfonts.com/svg/img_448306.png"
+        />
+        <h1 className="bodyBoxInteractions">INTERACTIONS</h1>
       </div>
       {isOpen && (
         <div className="popup-box">
-          <div className="box">
+          <div className="box interaction-pop-up">
             <span className="close-icon" onClick={togglePopUp}>
-              x
+              <img
+                className="close-icon-img"
+                alt="close button"
+                src="http://cdn.onlinewebfonts.com/svg/download_118699.png"
+              />
             </span>
-            <p>Interactions</p>
-            {medsList()}
+            <h1>My Medications</h1>
+            <div className="interaction-box-line"></div>
+            <div className="med-list-box">
+              {medsList()}
+              <button className="submit-button" onClick={submitCompare}>
+                Search
+              </button>
+            </div>
             {loading ? <Loading /> : interactions}
-            <button onClick={submitCompare}>Compare</button>
           </div>
         </div>
       )}

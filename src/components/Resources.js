@@ -8,20 +8,30 @@ const Resources = () => {
   };
 
   return (
-    <div className="bodyBox resourcesBox" onClick={togglePopUp}>
-      <div className="bodyBoxContent" onClick={togglePopUp}>
-        <h1 className="bodyBoxResources">Resources</h1>
+    <div className="bodyBox resources-box" onClick={togglePopUp}>
+      <div className="body-box-content" onClick={togglePopUp}>
+        <img
+          className="box-image"
+          alt="resources icon"
+          src="http://cdn.onlinewebfonts.com/svg/img_323457.png"
+        />
+        <h1 className="bodyBoxResources">RESOURCES</h1>
       </div>
       {isOpen && (
         <div className="popup-box">
-          <div className="box">
-            <div className="resourcesPopUp">
-              <span className="close-icon" onClick={togglePopUp}>
-                x
-              </span>
-              {
-                <>
-                  <h1 className="bodyBoxResources">Resources</h1>
+          <div className="box resource-pop-up">
+            <span className="close-icon" onClick={togglePopUp}>
+              <img
+                className="close-icon-img"
+                alt="close button"
+                src="http://cdn.onlinewebfonts.com/svg/download_118699.png"
+              />
+            </span>
+            {
+              <>
+                <h1 className="bodyBoxResources">Resources</h1>
+                <div className="resource-box-line"></div>
+                <div className="resource-list-box">
                   <a
                     href="https://apps2.deadiversion.usdoj.gov/pubdispsearch/spring/main;jsessionid=ETV-RUjzIiOTdJAeLdIkesgeocjtKdDFK0Qr-9kF.web2?execution=e1s1"
                     target="_blank"
@@ -57,9 +67,9 @@ const Resources = () => {
                   <a href="tel:1-800-222-1222">
                     poison control number (1-800-222-1222)
                   </a>
-                </>
-              }
-            </div>
+                </div>
+              </>
+            }
           </div>
         </div>
       )}

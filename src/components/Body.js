@@ -7,7 +7,7 @@ import Interactions from "./Interactions";
 const Body = () => {
   return (
     <>
-      <div className="bodyWrap">
+      <div className="body-wrap">
         <Resources />
         <Identify />
         <Interactions />

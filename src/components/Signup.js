@@ -28,26 +28,29 @@ export function Signup() {
   }
 
   return (
-    <>
-      <div className="headWrap">
-        <h1>Medication doesn't have to be SCARY</h1>
+    <div className="main-body">
+      <div className="head-wrap">
         <h1>Pill-Pal</h1>
+        <h1 className="banner-title">Medication doesn't have to be SCARY</h1>
       </div>
-      <form onSubmit={handleSubmit}>
-        <label htmlFor="input-email">Email</label>
-        <input id="input-email" type="email" ref={emailRef} />
-
-        <label htmlFor="input-password">Password</label>
-        <input id="input-password" type="password" ref={passwordRef} />
-
-        <br />
-
-        <button type="submit">Sign up</button>
-      </form>
-      <br />
-      <p>
-        Already have an account? <Link to="/login">Log In</Link>
-      </p>
-    </>
+      <div className="login-box">
+        <h3>Create an account</h3>
+        <form onSubmit={handleSubmit} className="login-form">
+          <label htmlFor="input-email">Email</label>
+          <input id="input-email" type="email" ref={emailRef} />
+          <br />
+          <label htmlFor="input-password">Password</label>
+          <input id="input-password" type="password" ref={passwordRef} />
+          <br />
+          <br />
+          <button className="login-button" type="submit">
+            Sign up
+          </button>
+        </form>
+        <p>
+          Already have an account? <Link to="/login">Log In</Link>
+        </p>
+      </div>
+    </div>
   );
 }

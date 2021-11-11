@@ -3,25 +3,18 @@ import { useHistory } from "react-router";
 import { useAuth } from "../contexts/Auth";
 import { useState } from "react";
 import Body from "./Body";
+import Loading from "./Loading";
 import UserDataContext from "../contexts/userData";
 
 export function Dashboard() {
-  const { userInfo, setStateChange, stateChange } = useContext(UserDataContext);
+  const { userInfo, setStateChange, stateChange, loading } =
+    useContext(UserDataContext);
   const { signOut } = useAuth();
   const history = useHistory();
-  const [hoverOpen, setHoverOpen] = useState(false);
 
   useEffect(() => {
     setStateChange(!stateChange);
   }, []);
-
-  const toggleUserButton = () => {
-    setHoverOpen(!hoverOpen);
-  };
-
-  const toggleUserButtonFalse = () => {
-    setHoverOpen(false);
-  };
 
   async function handleSignOut() {
     await signOut();
@@ -33,35 +26,39 @@ export function Dashboard() {
   }
 
   return (
-    <div>
-      <div className="headWrap">
-        <h1>Medication doesn't have to be SCARY</h1>
+    <div className="main-body">
+      <div className="head-wrap">
         <h1>Pill-Pal</h1>
-        <p>
+        <h1 className="banner-title">Medication doesn't have to be SCARY</h1>
+      </div>
+      <div className="logged-in-buttons">
+        <h4>
           Welcome,{" "}
           {Object.keys(userInfo).length !== 0
             ? userInfo[0].full_name || userInfo[0].username
             : "User"}
           !
-        </p>
-        <div>
+        </h4>
+        <div className="logout-edit-buttons">
           <input
-            onClick={toggleUserButton}
             type="image"
-            className="delete_button"
-            title="Delete"
-            src="https://webstockreview.net/images/clipart-pen-pen-icon-15.png"
-            alt="delete button"
+            className="edit-signout-button"
+            onClick={handleProfilePage}
+            title="edit profile"
+            alt="edit profile icon"
+            src="https://cdn4.iconfinder.com/data/icons/man-user-human-person-business-profile-avatar/100/20-1User_13-512.png"
           />
-          {hoverOpen && (
-            <div className="hoverDiv" onMouseLeave={toggleUserButtonFalse}>
-              <h5 onClick={handleSignOut}>Sign out</h5>
-              <h5 onClick={handleProfilePage}>Edit Profile</h5>
-            </div>
-          )}
+          <input
+            type="image"
+            className="edit-signout-button"
+            onClick={handleSignOut}
+            title="sign-out"
+            alt="sign out icon"
+            src="http://cdn.onlinewebfonts.com/svg/img_87594.png"
+          />
         </div>
       </div>
-      <Body />
+      {loading ? <Loading /> : <Body />}
     </div>
   );
 }

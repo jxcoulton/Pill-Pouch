@@ -3,6 +3,7 @@ import { useState, useContext } from "react";
 import { useAuth } from "../contexts/Auth";
 import { supabase } from "../supabase";
 import Toastify from "toastify-js";
+import Loading from "./Loading";
 import UserDataContext from "../contexts/userData";
 
 const Profile = () => {
@@ -12,6 +13,7 @@ const Profile = () => {
     userEmerContact,
     setStateChange,
     stateChange,
+    loading,
   } = useContext(UserDataContext);
 
   const history = useHistory();
@@ -140,83 +142,128 @@ const Profile = () => {
 
   return (
     <div>
-      <h1>Profile Page</h1>
-      <div>
-        <h3>My Information</h3>
-        <form onChange={handleChangeUser}>
-          <h5>
-            Name:{" "}
-            {Object.keys(userInfo).length !== 0 ? userInfo[0].full_name : "N/A"}
-          </h5>
-          <input placeholder="full name" name="full_name" />
-          <h5>
-            Username:{" "}
-            {Object.keys(userInfo).length !== 0 ? userInfo[0].username : `N/A`}
-          </h5>
-          <input placeholder="username" name="username" />
-          <br />
-          <button
-            onClick={(e) => {
-              updateName(e);
-            }}
-          >
-            Update Profile
-          </button>
-        </form>
+      <div className="head-wrap">
+        <h1>Pill-Pal</h1>
+        <h1 className="banner-title">Medication doesn't have to be SCARY</h1>
       </div>
-      <div>
-        <h3>My Allergies</h3>
-        <h5>
-          Allergies:
-          {Object.keys(userAllergies).length !== 0 ? allergyList() : `N/A`}
-        </h5>
-        <form onChange={handleAddAllergy}>
-          <input placeholder="add allergy" name="allergen" />
-          <br />
-          <button
-            onClick={(e) => {
-              updateAllergy(e);
-            }}
-          >
-            Add Allergy
-          </button>
-        </form>
+      <div className="logged-in-buttons">
+        <h4>
+          Welcome,{" "}
+          {Object.keys(userInfo).length !== 0
+            ? userInfo[0].full_name || userInfo[0].username
+            : "User"}
+          !
+        </h4>
+        <div className="logout-edit-buttons">
+          <input
+            type="image"
+            className="edit-signout-button"
+            onClick={handleReturnToPage}
+            title="home"
+            alt="home icon"
+            src="http://cdn.onlinewebfonts.com/svg/img_158445.png"
+          />
+        </div>
       </div>
-      <div>
-        <h3>My Contacts</h3>
-        <form onChange={handleChangeEC}>
-          <h5>
-            Emergency Contact Name:{" "}
-            {Object.keys(userEmerContact).length !== 0
-              ? userEmerContact.ec_full_name
-              : `N/A`}
-          </h5>
-          <input placeholder="full name" name="ec_full_name" />
-          <h5>
-            Relationship:{" "}
-            {Object.keys(userEmerContact).length !== 0
-              ? userEmerContact.ec_relationship
-              : `N/A`}
-          </h5>
-          <input placeholder="relationship" name="ec_relationship" />
-          <h5>
-            Phone Number:{" "}
-            {Object.keys(userEmerContact).length !== 0
-              ? userEmerContact.ec_phone
-              : `N/A`}
-          </h5>
-          <input placeholder="phone number" name="ec_phone" />
-          <br />
-          <button
-            onClick={(e) => {
-              updateEC(e);
-            }}
-          >
-            Update Emergency Contact
-          </button>
-        </form>
+      <div className="profile-page-body">
+        {loading ? (
+          <Loading />
+        ) : (
+          <>
+            <div className="profile-page-section">
+              <h3>My Information</h3>
+              <form onChange={handleChangeUser}>
+                <h5>Name</h5>
+                <input
+                  name="full_name"
+                  placeholder={
+                    Object.keys(userInfo).length !== 0
+                      ? userInfo[0].full_name
+                      : "N/A"
+                  }
+                />
+                <h5>Username:</h5>
+                <input
+                  placeholder={
+                    Object.keys(userInfo).length !== 0
+                      ? userInfo[0].username
+                      : `N/A`
+                  }
+                  name="username"
+                />
+                <br />
+                <button
+                  onClick={(e) => {
+                    updateName(e);
+                  }}
+                >
+                  Update Profile
+                </button>
+              </form>
+            </div>
+            <div className="profile-page-section">
+              <h3>My Allergies</h3>
+              <h5>
+                Allergies:
+                {Object.keys(userAllergies).length !== 0
+                  ? allergyList()
+                  : `N/A`}
+              </h5>
+              <form onChange={handleAddAllergy}>
+                <input placeholder="Add allergy" name="allergen" />
+                <br />
+                <button
+                  onClick={(e) => {
+                    updateAllergy(e);
+                  }}
+                >
+                  Add Allergy
+                </button>
+              </form>
+            </div>
+            <div className="profile-page-section">
+              <h3>My Contacts</h3>
+              <form onChange={handleChangeEC}>
+                <h5>Emergency Contact Name:</h5>
+                <input
+                  placeholder={
+                    Object.keys(userEmerContact).length !== 0
+                      ? userEmerContact.ec_full_name
+                      : `N/A`
+                  }
+                  name="ec_full_name"
+                />
+                <h5>Relationship:</h5>
+                <input
+                  placeholder={
+                    Object.keys(userEmerContact).length !== 0
+                      ? userEmerContact.ec_relationship
+                      : `N/A`
+                  }
+                  name="ec_relationship"
+                />
+                <h5>Phone Number:</h5>
+                <input
+                  placeholder={
+                    Object.keys(userEmerContact).length !== 0
+                      ? userEmerContact.ec_phone
+                      : `N/A`
+                  }
+                  name="ec_phone"
+                />
+                <br />
+                <button
+                  onClick={(e) => {
+                    updateEC(e);
+                  }}
+                >
+                  Update Emergency Contact
+                </button>
+              </form>
+            </div>
+          </>
+        )}
       </div>
-      <button onClick={handleReturnToPage}>Home</button>
     </div>
   );
 };
