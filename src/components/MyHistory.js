@@ -16,7 +16,6 @@ const MyHistory = () => {
     const medications = [];
     currentMeds.forEach((med, index) => {
       medications.push(
-        // <li id={med.drug_id} key={index} className="currentMedsList">
         <p
           className="currentMedsList"
           id={med.drug_id}
@@ -25,7 +24,6 @@ const MyHistory = () => {
         >
           {med.drug_name}
         </p>
-        // </li>
       );
     });
     return medications;
@@ -35,7 +33,6 @@ const MyHistory = () => {
     const allergies = [];
     userAllergies.forEach((allergy, index) => {
       allergies.push(
-        // <li id={allergy.allergy_id} key={index} className="currentMedsList">
         <p
           className="currentMedsList"
           id={allergy.allergy_id}
@@ -44,7 +41,6 @@ const MyHistory = () => {
         >
           - {allergy.allergen}
         </p>
-        // </li>
       );
     });
     return allergies;
@@ -87,7 +83,7 @@ const MyHistory = () => {
                 <div className="my-history-box-line"></div>
                 <h5>
                   Name:{" "}
-                  {userInfo[0].full_name !== null
+                  {Object.keys(userInfo).length !== 0
                     ? userInfo[0].full_name
                     : `N/A`}
                 </h5>
@@ -103,7 +99,7 @@ const MyHistory = () => {
                 <div className="my-history-box-line"></div>
                 <h5>
                   Emergency Contact:{" "}
-                  {userEmerContact.ec_full_name !== null ? (
+                  {Object.keys(userEmerContact).length !== 0 ? (
                     <div className="ec-info">
                       <h5>{userEmerContact.ec_full_name}</h5>
                       <h5>{userEmerContact.ec_relationship}</h5>

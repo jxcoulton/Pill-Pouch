@@ -1,18 +1,18 @@
 import React, { useContext, useEffect } from "react";
 import { useHistory } from "react-router";
 import { useAuth } from "../contexts/Auth";
-import { useState } from "react";
 import Body from "./Body";
 import Loading from "./Loading";
 import UserDataContext from "../contexts/userData";
 
 export function Dashboard() {
-  const { userInfo, setStateChange, stateChange, loading } =
+  const { userInfo, setStateChange, stateChange, loading, setLoading } =
     useContext(UserDataContext);
   const { signOut } = useAuth();
   const history = useHistory();
 
   useEffect(() => {
+    setLoading(true);
     setStateChange(!stateChange);
   }, []);
 

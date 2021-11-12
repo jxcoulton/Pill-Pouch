@@ -15,12 +15,12 @@ export const UserDataProvider = ({ children }) => {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    setLoading(true);
     returnUsername();
     getUserProfile();
     getUsersMeds();
     getUserEmerContact();
     getUserAllergies();
+    console.log(`rendered`);
   }, [stateChange]);
 
   async function returnUsername() {
@@ -38,7 +38,7 @@ export const UserDataProvider = ({ children }) => {
       await supabase.from("emergency_contact").insert({ user_id: user?.id });
       returnUsername();
     }
-    setLoading(false);
+    setLoading(false)
   }
 
   async function getUserProfile() {
@@ -104,6 +104,7 @@ export const UserDataProvider = ({ children }) => {
         getUserProfile,
         setCurrentMeds,
         loading,
+        setLoading,
       }}
     >
       {children}
