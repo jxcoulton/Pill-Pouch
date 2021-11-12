@@ -13,14 +13,20 @@ export const UserDataProvider = ({ children }) => {
   const [userEmerContact, setUserEmerContact] = useState([]);
   const [userAllergies, setUserAllergies] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [userConditions, setUserConditions] = useState([]);
 
   useEffect(() => {
     returnUsername();
+    console.log(`rendered`);
+  }, [activeItems]);
+
+  useEffect(() => {
     getUserProfile();
     getUsersMeds();
     getUserEmerContact();
     getUserAllergies();
-    console.log(`rendered`);
+    getUserConditions();
+    console.log(`render`);
   }, [stateChange]);
 
   async function returnUsername() {
@@ -31,6 +37,7 @@ export const UserDataProvider = ({ children }) => {
         .eq("user_id", user?.id);
       if (error) setActiveItems(user?.email);
       if (data) setActiveItems(data[0].username);
+      console.log(data);
     } catch {
       await supabase
         .from("profiles")
@@ -38,7 +45,7 @@ export const UserDataProvider = ({ children }) => {
       await supabase.from("emergency_contact").insert({ user_id: user?.id });
       returnUsername();
     }
-    setLoading(false)
+    setLoading(false);
   }
 
   async function getUserProfile() {
@@ -52,6 +59,7 @@ export const UserDataProvider = ({ children }) => {
     } catch {
       setUserInfo([]);
     }
+    setLoading(false);
   }
 
   async function getUsersMeds() {
@@ -92,6 +100,20 @@ export const UserDataProvider = ({ children }) => {
       setUserAllergies([]);
     }
   }
+
+  async function getUserConditions() {
+    try {
+      const { error, data } = await supabase
+        .from("conditions")
+        .select("*")
+        .eq("user_id", user?.id);
+      if (error) setUserConditions([]);
+      if (data) setUserConditions(data);
+    } catch {
+      setUserConditions([]);
+    }
+  }
+
   return (
     <UserDataContext.Provider
       value={{
@@ -105,6 +127,7 @@ export const UserDataProvider = ({ children }) => {
         setCurrentMeds,
         loading,
         setLoading,
+        userConditions,
       }}
     >
       {children}

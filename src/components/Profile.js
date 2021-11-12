@@ -14,6 +14,7 @@ const Profile = () => {
     setStateChange,
     stateChange,
     loading,
+    userConditions,
   } = useContext(UserDataContext);
 
   const history = useHistory();
@@ -21,6 +22,8 @@ const Profile = () => {
   const [updateUserProfile, setUpdateUserProfile] = useState([]);
   const [updateEmergencyContact, setUpdateEmergencyContact] = useState([]);
   const [addedAllergy, setAddedAllergy] = useState([]);
+  const [addedCondition, setAddedCondition] = useState([]);
+  const [deleteLoading, setDeleteLoading] = useState(false);
 
   async function handleReturnToPage() {
     history.push("/");
@@ -30,7 +33,7 @@ const Profile = () => {
     const allergies = [];
     userAllergies.forEach((allergy, index) => {
       allergies.push(
-        <li id={allergy.allergy_id} key={index} className="currentMedsList">
+        <li id={allergy.allergy_id} key={index} className="current-meds-list">
           <h5 value={index}>{allergy.allergen}</h5>
           <input
             type="image"
@@ -43,7 +46,39 @@ const Profile = () => {
         </li>
       );
     });
-    return allergies;
+    return (
+      <div className="my-history-block-sections">
+        <div className="found-meds-list">{allergies}</div>
+      </div>
+    );
+  };
+
+  const conditionList = () => {
+    const conditions = [];
+    userConditions.forEach((condition, index) => {
+      conditions.push(
+        <li
+          id={condition.condition_id}
+          key={index}
+          className="current-meds-list"
+        >
+          <h5 value={index}>{condition.condition}</h5>
+          <input
+            type="image"
+            className="delete_button"
+            onClick={deleteCurrentCondition}
+            title="Delete"
+            src="https://www.nicepng.com/png/detail/207-2079285_delete-comments-delete-icon-transparent.png"
+            alt="delete button"
+          />
+        </li>
+      );
+    });
+    return (
+      <div className="my-history-block-sections">
+        <div className="found-meds-list">{conditions}</div>
+      </div>
+    );
   };
 
   const handleChangeUser = (e) => {
@@ -62,6 +97,10 @@ const Profile = () => {
 
   const handleAddAllergy = (e) => {
     setAddedAllergy(e.target.value);
+  };
+
+  const handleAddCondition = (e) => {
+    setAddedCondition(e.target.value);
   };
 
   const updateName = async (e) => {
@@ -102,7 +141,7 @@ const Profile = () => {
 
   const updateAllergy = async (e) => {
     e.preventDefault();
-
+    setDeleteLoading(true);
     await supabase
       .from("allergies")
       .insert({ allergen: addedAllergy, user_id: user?.id })
@@ -112,6 +151,7 @@ const Profile = () => {
       text: `${addedAllergy} allergy has be added`,
       duration: 3000,
     }).showToast();
+    setDeleteLoading(false);
     setStateChange(!stateChange);
     setAddedAllergy([]);
     e.target.parentElement.reset();
@@ -119,6 +159,7 @@ const Profile = () => {
 
   async function deleteCurrentAllergy(e) {
     e.preventDefault();
+    setDeleteLoading(true);
     const allergyId = e.target.parentElement.id;
     const allergyName = e.target.previousElementSibling.innerHTML;
     const { error } = await supabase
@@ -137,6 +178,50 @@ const Profile = () => {
         duration: 3000,
       }).showToast();
     }
+    setDeleteLoading(false);
+    setStateChange(!stateChange);
+  }
+
+  const updateCondition = async (e) => {
+    e.preventDefault();
+    setDeleteLoading(true);
+    await supabase
+      .from("conditions")
+      .insert({ condition: addedCondition, user_id: user?.id })
+      .eq("user_id", user?.id);
+
+    Toastify({
+      text: `${addedCondition} has be added to the chart`,
+      duration: 3000,
+    }).showToast();
+    setDeleteLoading(false);
+    setStateChange(!stateChange);
+    setAddedCondition([]);
+    e.target.parentElement.reset();
+  };
+
+  async function deleteCurrentCondition(e) {
+    e.preventDefault();
+    setDeleteLoading(true);
+    const conditionId = e.target.parentElement.id;
+    const conditionName = e.target.previousElementSibling.innerHTML;
+    const { error } = await supabase
+      .from("conditions")
+      .delete()
+      .eq("user_id", user?.id)
+      .eq("condition_id", conditionId);
+    if (error) {
+      Toastify({
+        text: `something went wrong`,
+        duration: 3000,
+      }).showToast();
+    } else {
+      Toastify({
+        text: `${conditionName} has be removed from the chart`,
+        duration: 3000,
+      }).showToast();
+    }
+    setDeleteLoading(false);
     setStateChange(!stateChange);
   }
 
@@ -172,7 +257,8 @@ const Profile = () => {
           <>
             <div className="profile-page-section">
               <h3>My Information</h3>
-              <form onChange={handleChangeUser}>
+              <div className="profile-box-line"></div>
+              <form className="profile-form" onChange={handleChangeUser}>
                 <h5>Name</h5>
                 <input
                   name="full_name"
@@ -201,29 +287,58 @@ const Profile = () => {
                 </button>
               </form>
             </div>
-            <div className="profile-page-section">
-              <h3>My Allergies</h3>
-              <h5>
-                Allergies:
-                {Object.keys(userAllergies).length !== 0
-                  ? allergyList()
-                  : `N/A`}
-              </h5>
-              <form onChange={handleAddAllergy}>
-                <input placeholder="Add allergy" name="allergen" />
-                <br />
-                <button
-                  onClick={(e) => {
-                    updateAllergy(e);
-                  }}
-                >
-                  Add Allergy
-                </button>
-              </form>
+            <div className="profile-page-section extra-height">
+              <h3>My Health</h3>
+              <div className="profile-box-line"></div>
+              {deleteLoading ? (
+                <Loading />
+              ) : (
+                <>
+                  <div className="profile-space-break">
+                    <div className="profile-space-line"></div>
+                    <h4>Conditions</h4>
+                    <div className="profile-space-line"></div>
+                  </div>
+                  {Object.keys(userConditions).length !== 0
+                    ? conditionList()
+                    : `N/A`}
+                  <form className="profile-form" onChange={handleAddCondition}>
+                    <input placeholder="Add Condition" name="condition" />
+                    <br />
+                    <button
+                      onClick={(e) => {
+                        updateCondition(e);
+                      }}
+                    >
+                      Add Condition
+                    </button>
+                  </form>
+                  <div className="profile-space-break">
+                    <div className="profile-space-line"></div>
+                    <h4>Allergies</h4>
+                    <div className="profile-space-line"></div>
+                  </div>
+                  {Object.keys(userAllergies).length !== 0
+                    ? allergyList()
+                    : `N/A`}
+                  <form className="profile-form" onChange={handleAddAllergy}>
+                    <input placeholder="Add allergy" name="allergen" />
+                    <br />
+                    <button
+                      onClick={(e) => {
+                        updateAllergy(e);
+                      }}
+                    >
+                      Add Allergy
+                    </button>
+                  </form>
+                </>
+              )}
             </div>
             <div className="profile-page-section">
               <h3>My Contacts</h3>
-              <form onChange={handleChangeEC}>
+              <div className="profile-box-line"></div>
+              <form className="profile-form" onChange={handleChangeEC}>
                 <h5>Emergency Contact Name:</h5>
                 <input
                   placeholder={

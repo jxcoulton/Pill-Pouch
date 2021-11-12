@@ -3,8 +3,13 @@ import UserDataContext from "../contexts/userData";
 import "toastify-js/src/toastify.css";
 
 const MyHistory = () => {
-  const { currentMeds, userAllergies, userInfo, userEmerContact } =
-    useContext(UserDataContext);
+  const {
+    currentMeds,
+    userAllergies,
+    userInfo,
+    userEmerContact,
+    userConditions,
+  } = useContext(UserDataContext);
 
   const [isOpen, setIsOpen] = useState(false);
 
@@ -39,11 +44,36 @@ const MyHistory = () => {
           key={index}
           value={index}
         >
-          - {allergy.allergen}
+          {allergy.allergen}
         </p>
       );
     });
-    return allergies;
+    return (
+      <div className="my-history-block-sections">
+        <div className="found-meds-list">{allergies}</div>
+      </div>
+    );
+  };
+
+  const conditionList = () => {
+    const conditions = [];
+    userConditions.forEach((condition, index) => {
+      conditions.push(
+        <p
+          className="currentMedsList"
+          id={condition.condition_id}
+          key={index}
+          value={index}
+        >
+          {condition.condition}
+        </p>
+      );
+    });
+    return (
+      <div className="my-history-block-sections">
+        <div className="found-meds-list">{conditions}</div>
+      </div>
+    );
   };
 
   const handlePrint = () => {
@@ -71,44 +101,61 @@ const MyHistory = () => {
           <div className="box my-history-pop-up">
             <div id="printWindow" className="my-history-body">
               <div className="my-history-sections">
-                <h3>My Rx's</h3>
-                <div className="my-history-box-line"></div>
-                <h5>
-                  Medications:{" "}
-                  {Object.keys(currentMeds).length !== 0 ? medsList() : `N/A`}
-                </h5>
-              </div>
-              <div className="my-history-sections">
                 <h3>My Information</h3>
                 <div className="my-history-box-line"></div>
-                <h5>
-                  Name:{" "}
-                  {Object.keys(userInfo).length !== 0
-                    ? userInfo[0].full_name
-                    : `N/A`}
-                </h5>
-                <h5>
-                  Allergies:{" "}
+                <div className="history-list-box">
+                  <div className="profile-space-break">
+                    <div className="profile-space-line"></div>
+                    <h4>Name</h4>
+                    <div className="profile-space-line"></div>
+                  </div>
+                  <div className="my-history-block-sections">
+                    <div className="found-meds-list">
+                      {Object.keys(userInfo).length !== 0
+                        ? userInfo[0].full_name
+                        : `N/A`}
+                    </div>
+                  </div>
+                  <div className="profile-space-break">
+                    <div className="profile-space-line"></div>
+                    <h4>Allergies</h4>
+                    <div className="profile-space-line"></div>
+                  </div>
                   {Object.keys(userAllergies).length !== 0
                     ? allergyList()
                     : `N/A`}
-                </h5>
+                  <div className="profile-space-break">
+                    <div className="profile-space-line"></div>
+                    <h4>Conditions</h4>
+                    <div className="profile-space-line"></div>
+                  </div>
+                  {Object.keys(userConditions).length !== 0
+                    ? conditionList()
+                    : `N/A`}
+                </div>
               </div>
               <div className="my-history-sections">
-                <h3>My Contacts</h3>
+                <h3>My Prescriptions</h3>
                 <div className="my-history-box-line"></div>
-                <h5>
-                  Emergency Contact:{" "}
+
+                <div className="history-list-box">
+                  {Object.keys(currentMeds).length !== 0 ? medsList() : `N/A`}
+                </div>
+              </div>
+              <div className="my-history-sections">
+                <h3>Emergency Contact</h3>
+                <div className="my-history-box-line"></div>
+                <div className="history-list-box">
                   {Object.keys(userEmerContact).length !== 0 ? (
                     <div className="ec-info">
-                      <h5>{userEmerContact.ec_full_name}</h5>
-                      <h5>{userEmerContact.ec_relationship}</h5>
-                      <h5>{userEmerContact.ec_phone}</h5>
+                      <h4>Name: {userEmerContact.ec_full_name}</h4>
+                      <h4>Relationship: {userEmerContact.ec_relationship}</h4>
+                      <h4>Phone: {userEmerContact.ec_phone}</h4>
                     </div>
                   ) : (
                     `N/A`
                   )}
-                </h5>
+                </div>
               </div>
             </div>
             <span className="close-icon" onClick={togglePopUp}>
@@ -118,10 +165,10 @@ const MyHistory = () => {
                 src="http://cdn.onlinewebfonts.com/svg/download_118699.png"
               />
             </span>
-            <p>
-              It is recommended that you{" "}
-              <button onClick={handlePrint}>Print</button> a copy to keep on you
-              and include any medical conditions
+            <p className="search-disclaimer">
+              In case of an emergency{" "}
+              <button onClick={handlePrint}>Print</button> a copy to keep with
+              you
             </p>
           </div>
         </div>

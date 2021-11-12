@@ -106,7 +106,7 @@ const Identify = () => {
               medications.push(
                 <li className="returned-med-card" id={drug.rxcui} key={index}>
                   <img
-                    className="medImages"
+                    className="med-images"
                     src={drug.imageUrl}
                     alt={drug.name}
                   />
@@ -115,7 +115,13 @@ const Identify = () => {
                 </li>
               );
           });
-          setFoundMeds(medications);
+          setFoundMeds(
+            <div className="identify-sections">
+              <h1>Results</h1>
+              <div className="identify-box-line"></div>
+              <div className="found-meds-list">{medications}</div>
+            </div>
+          );
         });
     } else if (e.target[3].value !== "") {
       axios
@@ -138,7 +144,7 @@ const Identify = () => {
                       key={index}
                     >
                       <img
-                        className="medImages"
+                        className="med-images"
                         src={drug.imageUrl}
                         alt={drug.name}
                       />
@@ -154,7 +160,7 @@ const Identify = () => {
                 medications.push(
                   <li className="returned-med-card" id={drug.rxcui} key={index}>
                     <img
-                      className="medImages"
+                      className="med-images"
                       src={drug.imageUrl}
                       alt={drug.name}
                     />
@@ -164,7 +170,13 @@ const Identify = () => {
                 );
             }
           });
-          setFoundMeds(medications);
+          setFoundMeds(
+            <div className="identify-sections">
+              <h1>Results</h1>
+              <div className="identify-box-line"></div>
+              <div className="found-meds-list">{medications}</div>
+            </div>
+          );
         });
     }
     e.target.reset();
@@ -284,11 +296,7 @@ const Identify = () => {
                 </form>
               </div>
             </div>
-            <div className="identify-sections">
-              <h1>Results</h1>
-              <div className="identify-box-line"></div>
-              <div className="foundMedsList">{foundMeds}</div>
-            </div>
+            {foundMeds}
             <span className="close-icon" onClick={togglePopUp}>
               <img
                 className="close-icon-img"

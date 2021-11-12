@@ -46,7 +46,7 @@ footer {
 }
 
 .login-box {
-  background-color: #c4c4c4;
+  background-color: rgb(223, 223, 223);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -81,7 +81,7 @@ footer {
 .logged-in-buttons {
   display: flex;
   justify-content: space-between;
-  width: 100%;
+  width: 97%;
   align-items: center;
   height: 30px;
   margin: 5px;
@@ -89,7 +89,7 @@ footer {
 
 .edit-signout-button {
   width: 25px;
-  margin-right: 37px;
+  margin-left: 35px;
 }
 
 .body-wrap {
@@ -285,10 +285,9 @@ a:hover {
 }
 .my-history-body {
   display: flex;
-  flex-direction: row;
-  align-items: flex-start;
+  flex-direction: column;
+  align-items: center;
   flex-wrap: wrap;
-  padding-left: 30px;
 }
 .my-history-box-line {
   width: 75%;
@@ -299,11 +298,31 @@ a:hover {
 .my-history-sections {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  width: 33%;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 50px;
+}
+.my-history-block-sections {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 2%;
+  width: 100%;
+}
+.history-list-box {
+  display: flex;
+  flex-direction: column;
+  background-color: #e4e4e4;
+  box-shadow: 0 0px 30px #c6c6c6a1;
+  width: 100%;
+  align-items: center;
+  flex-wrap: wrap;
 }
 .ec-info {
   font-size: 20px;
+  width: 100%;
+  display: flex;
+  justify-content: space-evenly;
 }
 
 .submit-button {
@@ -384,32 +403,60 @@ a:hover {
 .profile-page-body {
   display: flex;
   min-height: 50vh;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: space-around;
   background-color: rgb(223, 223, 223);
+  align-items: center;
 }
 .profile-page-section {
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
+  align-items: center;
+  width: 75%;
+  margin-bottom: 40px;
+}
+.profile-space-break {
+  width: 40vw;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: baseline;
+  height: 50px;
+}
+.profile-space-line {
+  width: 35%;
+  height: 1px;
+  background-color: #cac9c9;
+  margin: 0 10px;
+}
+.profile-form {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  align-items: center;
+  flex-direction: row;
+}
+.profile-box-line {
+  width: 75%;
+  min-height: 5px;
+  background-color: #d0d0d0;
+  margin-bottom: 30px;
+}
+.extra-height {
+  min-height: 55vh;
 }
 
-.medImages {
+.med-images {
   max-width: 200px;
   max-height: 200px;
 }
 
-.foundMedsList {
+.found-meds-list {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: space-evenly;
-}
-
-.hoverDiv {
-  width: 100px;
-  height: 100px;
-  padding: 10px;
 }
 
 li {
@@ -420,7 +467,6 @@ li {
 }
 
 h5 {
-  /* max-width: 200px; */
   margin: 10px;
 }
 
@@ -465,10 +511,90 @@ circle {
 }
 
 @media only screen and (max-width: 700px) {
-  .headWrap {
-    background-size: cover;
-  }
-  .identifyForm {
+  .body-wrap {
     flex-direction: column;
+  }
+
+  .resources-box {
+    background-color: #c1e7b5;
+    width: 100%;
+  }
+  .resource-pop-up {
+    font-size: 16px;
+    padding: 15px;
+  }
+
+  .identify-box {
+    background-color: #bbc5ee;
+    width: 100%;
+  }
+  .identify-pop-up {
+    border-color: #bbc5ee;
+    font-size: 16px;
+    padding: 15px;
+  }
+  .identify-form {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+  .found-meds-list {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .interaction-box {
+    background-color: #c2e5ec;
+    width: 100%;
+  }
+  .interaction-pop-up {
+    font-size: 16px;
+    padding: 15px;
+  }
+
+  .my-history-box {
+    background-color: #f3b5f3;
+    width: 100%;
+  }
+  .my-history-pop-up {
+    font-size: 16px;
+    padding: 15px;
+  }
+  .my-history-body {
+    padding-left: 0;
+    flex-direction: column;
+  }
+  .my-history-sections {
+    width: 100%;
+  }
+  .ec-info {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .submit-button {
+    margin: 20px 0;
+  }
+
+  .edit-signout-button {
+    margin: 0 0 0 15px;
+    justify-content: space-evenly;
+  }
+
+  .profile-page-body {
+    flex-direction: column;
+  }
+  .profile-page-section {
+    width: 90%;
+  }
+  .profile-form {
+    flex-direction: column;
+  }
+  .login-box {
+    width: 90%;
+  }
+
+  .current-meds-list {
+    flex-wrap: nowrap;
+    align-items: center;
   }
 }
