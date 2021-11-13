@@ -12,7 +12,6 @@ export function Dashboard() {
     stateChange,
     loading,
     setLoading,
-    signedIn,
   } = useContext(UserDataContext);
   const { signOut } = useAuth();
   const history = useHistory();
