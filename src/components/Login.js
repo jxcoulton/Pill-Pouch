@@ -38,11 +38,11 @@ export function Login() {
   return (
     <div className="main-body">
       <div className="head-wrap">
-        <h1>Pill-Pal</h1>
-        <h1 className="banner-title">Medication doesn't have to be SCARY</h1>
+        <h2 className="web-name">Pill-Pal</h2>
+        <h1 className="banner-title">Making medicine less scary</h1>
       </div>
       <div className="login-box">
-        <h3>Login to your account</h3>
+        <h2>Login to your account</h2>
         <form onSubmit={handleSubmit} className="login-form">
           <label htmlFor="input-email">Email</label>
           <input id="input-email" type="email" ref={emailRef} />

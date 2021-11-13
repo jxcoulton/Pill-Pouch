@@ -66,14 +66,15 @@ const Interactions = () => {
           }
         });
         setLoading(false);
-        interactionList.length === 0? setInteractions(<h2>No results</h2>) :
-        setInteractions(
-          <div className="interaction-pop-up">
-            <h1>Results</h1>
-            <div className="interaction-box-line"></div>
-            <div className="interaction-list-box">{interactionList}</div>
-          </div>
-        );
+        interactionList.length === 0
+          ? setInteractions(<h2>No results</h2>)
+          : setInteractions(
+              <div className="interaction-pop-up">
+                <h1>Results</h1>
+                <div className="interaction-box-line"></div>
+                <div className="interaction-list-box">{interactionList}</div>
+              </div>
+            );
       });
   };
 
@@ -101,9 +102,13 @@ const Interactions = () => {
             <div className="interaction-box-line"></div>
             <div className="med-list-box">
               {medsList()}
-              <button className="submit-button" onClick={submitCompare}>
-                Search
-              </button>
+              {currentMeds.length === 0 ? (
+                <h4>Add medications to view interactions</h4>
+              ) : (
+                <button className="submit-button" onClick={submitCompare}>
+                  Search
+                </button>
+              )}
             </div>
             {loading ? <Loading /> : interactions}
           </div>

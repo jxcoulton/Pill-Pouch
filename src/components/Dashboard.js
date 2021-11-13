@@ -35,14 +35,14 @@ export function Dashboard() {
   return (
     <div className="main-body">
       <div className="head-wrap">
-        <h1>Pill-Pal</h1>
-        <h1 className="banner-title">Medication doesn't have to be SCARY</h1>
+        <h2 className="web-name">Pill-Pal</h2>
+        <h1 className="banner-title">Making medicine less scary</h1>
       </div>
       <div className="logged-in-buttons">
         <h4>
           Welcome,{" "}
           {Object.keys(userInfo).length !== 0
-            ? userInfo[0].full_name || userInfo[0].username
+            ? userInfo[0].username || userInfo[0].full_name
             : "User"}
           !
         </h4>

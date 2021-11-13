@@ -228,8 +228,8 @@ const Profile = () => {
   return (
     <div className="profile-box">
       <div className="head-wrap">
-        <h1>Pill-Pal</h1>
-        <h1 className="banner-title">Medication doesn't have to be SCARY</h1>
+      <h2 className="web-name">Pill-Pal</h2>
+        <h1 className="banner-title">Making medicine less scary</h1>
       </div>
       <div className="logged-in-buttons">
         <h4>
