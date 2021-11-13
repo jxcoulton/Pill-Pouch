@@ -47,9 +47,9 @@ footer {
 }
 
 .web-name {
-  text-align: right;
+  text-align: left;
   font-size: 3vw;
-  margin: 2% 1% 0 0;
+  margin: 2% 0 0 1%;
 }
 
 .login-box {
@@ -523,7 +523,33 @@ circle {
   }
 }
 
-@media only screen and (max-width: 700px) {
+@media only screen and (max-width: 1367px) and (orientation: landscape) {
+  .main-body {
+    min-height: 88vh;
+  }
+  .resources-box {
+    background-color: #c1e7b5;
+  }
+
+  .identify-box {
+    background-color: #bbc5ee;
+  }
+  .interaction-box {
+    background-color: #c2e5ec;
+  }
+  .my-history-box {
+    background-color: #f3b5f3;
+  }
+}
+
+@media only screen and (max-width: 1367px) and (orientation: portrait) {
+  .main-body {
+    min-height: 88vh;
+  }
+  .head-wrap {
+    height: 19vh;
+    background-size: auto;
+  }
   .body-wrap {
     flex-direction: column;
   }
@@ -585,7 +611,7 @@ circle {
   }
 
   .submit-button {
-    margin: 20px 0;
+    margin: 20px 40%;
   }
 
   .edit-signout-button {

@@ -6,13 +6,8 @@ import Loading from "./Loading";
 import UserDataContext from "../contexts/userData";
 
 export function Dashboard() {
-  const {
-    userInfo,
-    setStateChange,
-    stateChange,
-    loading,
-    setLoading,
-  } = useContext(UserDataContext);
+  const { userInfo, setStateChange, stateChange, loading, setLoading } =
+    useContext(UserDataContext);
   const { signOut } = useAuth();
   const history = useHistory();
 
