@@ -18,7 +18,6 @@ export const UserDataProvider = ({ children }) => {
   useEffect(() => {
     if (user !== null) {
       returnUsername();
-      console.log(`rendered`);
     }
   }, [activeItems, user]);
 
@@ -29,7 +28,6 @@ export const UserDataProvider = ({ children }) => {
       getUserEmerContact();
       getUserAllergies();
       getUserConditions();
-      console.log(`render`);
     }
   }, [stateChange, user, activeItems]);
 

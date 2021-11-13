@@ -23,8 +23,6 @@ const Identify = () => {
   const [loading, setLoading] = useState(false);
   const { user } = useAuth();
 
-  console.log(formData);
-
   const togglePopUp = () => {
     setIsOpen(!isOpen);
     resetState();
