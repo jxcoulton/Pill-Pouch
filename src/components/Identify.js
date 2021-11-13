@@ -23,6 +23,8 @@ const Identify = () => {
   const [loading, setLoading] = useState(false);
   const { user } = useAuth();
 
+  console.log(formData);
+
   const togglePopUp = () => {
     setIsOpen(!isOpen);
     resetState();
@@ -115,13 +117,15 @@ const Identify = () => {
                 </li>
               );
           });
-          setFoundMeds(
-            <div className="identify-sections">
-              <h1>Results</h1>
-              <div className="identify-box-line"></div>
-              <div className="found-meds-list">{medications}</div>
-            </div>
-          );
+          medications.length === 0
+            ? setFoundMeds(<h2 className="identify-sections">No results</h2>)
+            : setFoundMeds(
+                <div className="identify-sections">
+                  <h1>Results</h1>
+                  <div className="identify-box-line"></div>
+                  <div className="found-meds-list">{medications}</div>
+                </div>
+              );
         });
     } else if (e.target[3].value !== "") {
       axios
@@ -170,16 +174,19 @@ const Identify = () => {
                 );
             }
           });
-          setFoundMeds(
-            <div className="identify-sections">
-              <h1>Results</h1>
-              <div className="identify-box-line"></div>
-              <div className="found-meds-list">{medications}</div>
-            </div>
-          );
+          medications.length === 0
+            ? setFoundMeds(<h2 className="identify-sections">No results</h2>)
+            : setFoundMeds(
+                <div className="identify-sections">
+                  <h1>Results</h1>
+                  <div className="identify-box-line"></div>
+                  <div className="found-meds-list">{medications}</div>
+                </div>
+              );
         });
     }
     e.target.reset();
+    setFormData(initialFormData);
   };
 
   const medsList = () => {
@@ -279,12 +286,8 @@ const Identify = () => {
                     </div>
                   </div>
                   <div className="identify-form">
-                    <h4>Name and Strength</h4>
-                    <input
-                      type="text"
-                      name="name"
-                      placeholder="name and strength"
-                    />
+                    <h4>Name</h4>
+                    <input type="text" name="name" placeholder="name" />
                     <p className="search-disclaimer">
                       *when searching by name, images may differ from your
                       prescription*

@@ -226,7 +226,7 @@ const Profile = () => {
   }
 
   return (
-    <div>
+    <div className="profile-box">
       <div className="head-wrap">
         <h1>Pill-Pal</h1>
         <h1 className="banner-title">Medication doesn't have to be SCARY</h1>
@@ -250,135 +250,133 @@ const Profile = () => {
           />
         </div>
       </div>
-      <div className="profile-page-body">
-        {loading ? (
-          <Loading />
-        ) : (
-          <>
-            <div className="profile-page-section">
-              <h3>My Information</h3>
-              <div className="profile-box-line"></div>
-              <form className="profile-form" onChange={handleChangeUser}>
-                <h5>Name</h5>
-                <input
-                  name="full_name"
-                  placeholder={
-                    Object.keys(userInfo).length !== 0
-                      ? userInfo[0].full_name
-                      : "N/A"
-                  }
-                />
-                <h5>Username:</h5>
-                <input
-                  placeholder={
-                    Object.keys(userInfo).length !== 0
-                      ? userInfo[0].username
-                      : `N/A`
-                  }
-                  name="username"
-                />
-                <br />
-                <button
-                  onClick={(e) => {
-                    updateName(e);
-                  }}
-                >
-                  Update Profile
-                </button>
-              </form>
-            </div>
-            <div className="profile-page-section extra-height">
-              <h3>My Health</h3>
-              <div className="profile-box-line"></div>
-              {deleteLoading ? (
-                <Loading />
-              ) : (
-                <>
-                  <div className="profile-space-break">
-                    <div className="profile-space-line"></div>
-                    <h4>Conditions</h4>
-                    <div className="profile-space-line"></div>
-                  </div>
-                  {Object.keys(userConditions).length !== 0
-                    ? conditionList()
-                    : `N/A`}
-                  <form className="profile-form" onChange={handleAddCondition}>
-                    <input placeholder="Add Condition" name="condition" />
-                    <br />
-                    <button
-                      onClick={(e) => {
-                        updateCondition(e);
-                      }}
-                    >
-                      Add Condition
-                    </button>
-                  </form>
-                  <div className="profile-space-break">
-                    <div className="profile-space-line"></div>
-                    <h4>Allergies</h4>
-                    <div className="profile-space-line"></div>
-                  </div>
-                  {Object.keys(userAllergies).length !== 0
-                    ? allergyList()
-                    : `N/A`}
-                  <form className="profile-form" onChange={handleAddAllergy}>
-                    <input placeholder="Add allergy" name="allergen" />
-                    <br />
-                    <button
-                      onClick={(e) => {
-                        updateAllergy(e);
-                      }}
-                    >
-                      Add Allergy
-                    </button>
-                  </form>
-                </>
-              )}
-            </div>
-            <div className="profile-page-section">
-              <h3>My Contacts</h3>
-              <div className="profile-box-line"></div>
-              <form className="profile-form" onChange={handleChangeEC}>
-                <h5>Emergency Contact Name:</h5>
-                <input
-                  placeholder={
-                    Object.keys(userEmerContact).length !== 0
-                      ? userEmerContact.ec_full_name
-                      : `N/A`
-                  }
-                  name="ec_full_name"
-                />
-                <h5>Relationship:</h5>
-                <input
-                  placeholder={
-                    Object.keys(userEmerContact).length !== 0
-                      ? userEmerContact.ec_relationship
-                      : `N/A`
-                  }
-                  name="ec_relationship"
-                />
-                <h5>Phone Number:</h5>
-                <input
-                  placeholder={
-                    Object.keys(userEmerContact).length !== 0
-                      ? userEmerContact.ec_phone
-                      : `N/A`
-                  }
-                  name="ec_phone"
-                />
-                <br />
-                <button
-                  onClick={(e) => {
-                    updateEC(e);
-                  }}
-                >
-                  Update Emergency Contact
-                </button>
-              </form>
-            </div>
-          </>
-        )}
-      </div>
+      {loading ? (
+        <Loading />
+      ) : (
+        <div className="profile-page-body">
+          <div className="profile-page-section">
+            <h3>My Information</h3>
+            <div className="profile-box-line"></div>
+            <form className="profile-form" onChange={handleChangeUser}>
+              <h5>Name</h5>
+              <input
+                name="full_name"
+                placeholder={
+                  Object.keys(userInfo).length !== 0
+                    ? userInfo[0].full_name
+                    : "N/A"
+                }
+              />
+              <h5>Username:</h5>
+              <input
+                placeholder={
+                  Object.keys(userInfo).length !== 0
+                    ? userInfo[0].username
+                    : `N/A`
+                }
+                name="username"
+              />
+              <br />
+              <button
+                onClick={(e) => {
+                  updateName(e);
+                }}
+              >
+                Update Profile
+              </button>
+            </form>
+          </div>
+          <div className="profile-page-section extra-height">
+            <h3>My Health</h3>
+            <div className="profile-box-line"></div>
+            {deleteLoading ? (
+              <Loading />
+            ) : (
+              <>
+                <div className="profile-space-break">
+                  <div className="profile-space-line"></div>
+                  <h4>Conditions</h4>
+                  <div className="profile-space-line"></div>
+                </div>
+                {Object.keys(userConditions).length !== 0
+                  ? conditionList()
+                  : `N/A`}
+                <form className="profile-form" onChange={handleAddCondition}>
+                  <input placeholder="Add Condition" name="condition" />
+                  <br />
+                  <button
+                    onClick={(e) => {
+                      updateCondition(e);
+                    }}
+                  >
+                    Add Condition
+                  </button>
+                </form>
+                <div className="profile-space-break">
+                  <div className="profile-space-line"></div>
+                  <h4>Allergies</h4>
+                  <div className="profile-space-line"></div>
+                </div>
+                {Object.keys(userAllergies).length !== 0
+                  ? allergyList()
+                  : `N/A`}
+                <form className="profile-form" onChange={handleAddAllergy}>
+                  <input placeholder="Add allergy" name="allergen" />
+                  <br />
+                  <button
+                    onClick={(e) => {
+                      updateAllergy(e);
+                    }}
+                  >
+                    Add Allergy
+                  </button>
+                </form>
+              </>
+            )}
+          </div>
+          <div className="profile-page-section">
+            <h3>My Contacts</h3>
+            <div className="profile-box-line"></div>
+            <form className="profile-form" onChange={handleChangeEC}>
+              <h5>Emergency Contact Name:</h5>
+              <input
+                placeholder={
+                  Object.keys(userEmerContact).length !== 0
+                    ? userEmerContact.ec_full_name
+                    : `N/A`
+                }
+                name="ec_full_name"
+              />
+              <h5>Relationship:</h5>
+              <input
+                placeholder={
+                  Object.keys(userEmerContact).length !== 0
+                    ? userEmerContact.ec_relationship
+                    : `N/A`
+                }
+                name="ec_relationship"
+              />
+              <h5>Phone Number:</h5>
+              <input
+                placeholder={
+                  Object.keys(userEmerContact).length !== 0
+                    ? userEmerContact.ec_phone
+                    : `N/A`
+                }
+                name="ec_phone"
+              />
+              <br />
+              <button
+                onClick={(e) => {
+                  updateEC(e);
+                }}
+              >
+                Update Emergency Contact
+              </button>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

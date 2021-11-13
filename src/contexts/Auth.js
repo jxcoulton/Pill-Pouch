@@ -27,6 +27,7 @@ export function AuthProvider({ children }) {
     };
   }, []);
 
+
   // Will be passed down to Signup, Login and Dashboard components
   const value = {
     signUp: (data) => supabase.auth.signUp(data),

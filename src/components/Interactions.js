@@ -66,6 +66,7 @@ const Interactions = () => {
           }
         });
         setLoading(false);
+        interactionList.length === 0? setInteractions(<h2>No results</h2>) :
         setInteractions(
           <div className="interaction-pop-up">
             <h1>Results</h1>

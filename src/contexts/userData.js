@@ -16,18 +16,22 @@ export const UserDataProvider = ({ children }) => {
   const [userConditions, setUserConditions] = useState([]);
 
   useEffect(() => {
-    returnUsername();
-    console.log(`rendered`);
-  }, [activeItems]);
+    if (user !== null) {
+      returnUsername();
+      console.log(`rendered`);
+    }
+  }, [activeItems, user]);
 
   useEffect(() => {
-    getUserProfile();
-    getUsersMeds();
-    getUserEmerContact();
-    getUserAllergies();
-    getUserConditions();
-    console.log(`render`);
-  }, [stateChange]);
+    if (user !== null) {
+      getUserProfile();
+      getUsersMeds();
+      getUserEmerContact();
+      getUserAllergies();
+      getUserConditions();
+      console.log(`render`);
+    }
+  }, [stateChange, user, activeItems]);
 
   async function returnUsername() {
     try {
@@ -35,9 +39,8 @@ export const UserDataProvider = ({ children }) => {
         .from("profiles")
         .select("*")
         .eq("user_id", user?.id);
-      if (error) setActiveItems(user?.email);
+      if (error) setActiveItems([]);
       if (data) setActiveItems(data[0].username);
-      console.log(data);
     } catch {
       await supabase
         .from("profiles")
@@ -128,6 +131,7 @@ export const UserDataProvider = ({ children }) => {
         loading,
         setLoading,
         userConditions,
+        setUserInfo,
       }}
     >
       {children}

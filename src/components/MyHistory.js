@@ -14,7 +14,9 @@ const MyHistory = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   const togglePopUp = () => {
-    setIsOpen(!isOpen);
+    if (userEmerContact !== undefined) {
+      setIsOpen(!isOpen);
+    }
   };
 
   const medsList = () => {

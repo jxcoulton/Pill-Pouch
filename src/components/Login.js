@@ -1,4 +1,4 @@
-import { useRef, useContext, useEffect } from "react";
+import { useRef, useContext, useEffect, useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { useAuth } from "../contexts/Auth";
 import Toastify from "toastify-js";
@@ -6,10 +6,10 @@ import "toastify-js/src/toastify.css";
 import UserDataContext from "../contexts/userData";
 
 export function Login() {
-  const { getUserProfile } = useContext(UserDataContext);
+  const { setUserInfo } = useContext(UserDataContext);
 
   useEffect(() => {
-    getUserProfile();
+    setUserInfo([]);
   }, []);
 
   const emailRef = useRef();

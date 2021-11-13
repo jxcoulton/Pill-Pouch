@@ -6,8 +6,14 @@ import Loading from "./Loading";
 import UserDataContext from "../contexts/userData";
 
 export function Dashboard() {
-  const { userInfo, setStateChange, stateChange, loading, setLoading } =
-    useContext(UserDataContext);
+  const {
+    userInfo,
+    setStateChange,
+    stateChange,
+    loading,
+    setLoading,
+    signedIn,
+  } = useContext(UserDataContext);
   const { signOut } = useAuth();
   const history = useHistory();
 
@@ -17,6 +23,7 @@ export function Dashboard() {
   }, []);
 
   async function handleSignOut() {
+    setStateChange(!stateChange);
     await signOut();
     history.push("/login");
   }
