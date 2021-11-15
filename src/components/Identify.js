@@ -156,7 +156,10 @@ const Identify = () => {
                         alt={drug.name}
                       />
                       <h5>{drug.name}</h5>
-                      <button onClick={addToCurrentMeds}>
+                      <button
+                        className="btn-primary"
+                        onClick={addToCurrentMeds}
+                      >
                         Add to my chart
                       </button>
                     </li>
@@ -172,7 +175,9 @@ const Identify = () => {
                       alt={drug.name}
                     />
                     <h5>{drug.name}</h5>
-                    <button onClick={addToCurrentMeds}>Add to my chart</button>
+                    <button className="btn-primary" onClick={addToCurrentMeds}>
+                      Add to my chart
+                    </button>
                   </li>
                 );
             }
