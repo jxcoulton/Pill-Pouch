@@ -32,7 +32,7 @@ export function Signup() {
     <div className="main-body">
       <div className="head-wrap">
         <h2 className="web-name">Pill-Pal</h2>
-        <h1 className="banner-title">Making medicine less scary</h1>
+        <h1 className="banner-title">Medication management simplified</h1>
       </div>
       <div className="login-box">
         <h2>Create an account</h2>
