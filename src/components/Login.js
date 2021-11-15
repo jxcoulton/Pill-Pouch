@@ -29,6 +29,7 @@ export function Login() {
       Toastify({
         text: `error signing in`,
         duration: 3000,
+        position: "left",
       }).showToast();
     } else {
       history.push("/");
@@ -51,7 +52,7 @@ export function Login() {
           <input id="input-password" type="password" ref={passwordRef} />
           <p className="forgot-password-link">Forgot password?</p>
           <button className="login-button" type="submit">
-            Login
+            LOGIN
           </button>
         </form>
         <p>

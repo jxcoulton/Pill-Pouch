@@ -1,6 +1,5 @@
 import React, { useState, useContext } from "react";
 import UserDataContext from "../contexts/userData";
-import "toastify-js/src/toastify.css";
 
 const MyHistory = () => {
   const {
@@ -23,14 +22,14 @@ const MyHistory = () => {
     const medications = [];
     currentMeds.forEach((med, index) => {
       medications.push(
-        <p
+        <h5
           className="currentMedsList"
           id={med.drug_id}
           key={index}
           value={index}
         >
           {med.drug_name}
-        </p>
+        </h5>
       );
     });
     return medications;
@@ -40,14 +39,14 @@ const MyHistory = () => {
     const allergies = [];
     userAllergies.forEach((allergy, index) => {
       allergies.push(
-        <p
+        <h5
           className="currentMedsList"
           id={allergy.allergy_id}
           key={index}
           value={index}
         >
           {allergy.allergen}
-        </p>
+        </h5>
       );
     });
     return (
@@ -61,14 +60,14 @@ const MyHistory = () => {
     const conditions = [];
     userConditions.forEach((condition, index) => {
       conditions.push(
-        <p
+        <h5
           className="currentMedsList"
           id={condition.condition_id}
           key={index}
           value={index}
         >
           {condition.condition}
-        </p>
+        </h5>
       );
     });
     return (
@@ -113,9 +112,9 @@ const MyHistory = () => {
                   </div>
                   <div className="my-history-block-sections">
                     <div className="found-meds-list">
-                      {Object.keys(userInfo).length !== 0
+                      <h5>{Object.keys(userInfo).length !== 0
                         ? userInfo[0].full_name
-                        : `N/A`}
+                        : `N/A`}</h5>
                     </div>
                   </div>
                   <div className="profile-space-break">
@@ -150,9 +149,9 @@ const MyHistory = () => {
                 <div className="history-list-box">
                   {Object.keys(userEmerContact).length !== 0 ? (
                     <div className="ec-info">
-                      <h4>Name: {userEmerContact.ec_full_name}</h4>
-                      <h4>Relationship: {userEmerContact.ec_relationship}</h4>
-                      <h4>Phone: {userEmerContact.ec_phone}</h4>
+                      <h5>Name: {userEmerContact.ec_full_name}</h5>
+                      <h5>Relationship: {userEmerContact.ec_relationship}</h5>
+                      <h5>Phone: {userEmerContact.ec_phone}</h5>
                     </div>
                   ) : (
                     `N/A`

@@ -21,6 +21,7 @@ export function Signup() {
       Toastify({
         text: `error signing up`,
         duration: 3000,
+        position: "left",
       }).showToast();
     } else {
       history.push("/");

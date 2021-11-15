@@ -59,6 +59,7 @@ const Identify = () => {
     Toastify({
       text: `${drugName} has be added`,
       duration: 3000,
+      position: "left",
     }).showToast();
     setCurrentMeds([]);
     setLoading(false);
@@ -79,11 +80,13 @@ const Identify = () => {
       Toastify({
         text: `something went wrong`,
         duration: 3000,
+        position: "left",
       }).showToast();
     } else {
       Toastify({
         text: `${drugName} has be removed`,
         duration: 3000,
+        position: "left",
       }).showToast();
     }
     setCurrentMeds([]);

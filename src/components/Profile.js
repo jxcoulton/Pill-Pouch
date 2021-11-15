@@ -115,6 +115,7 @@ const Profile = () => {
     Toastify({
       text: `your profile has been updated`,
       duration: 3000,
+      position: "left",
     }).showToast();
     setStateChange(!stateChange);
     setUpdateUserProfile([]);
@@ -133,6 +134,7 @@ const Profile = () => {
     Toastify({
       text: `emergency contact has been updated`,
       duration: 3000,
+      position: "left",
     }).showToast();
     setStateChange(!stateChange);
     setUpdateEmergencyContact([]);
@@ -150,6 +152,7 @@ const Profile = () => {
     Toastify({
       text: `${addedAllergy} allergy has be added`,
       duration: 3000,
+      position: "left",
     }).showToast();
     setDeleteLoading(false);
     setStateChange(!stateChange);
@@ -171,11 +174,13 @@ const Profile = () => {
       Toastify({
         text: `something went wrong`,
         duration: 3000,
+        position: "left",
       }).showToast();
     } else {
       Toastify({
         text: `${allergyName} allergy has be removed`,
         duration: 3000,
+        position: "left",
       }).showToast();
     }
     setDeleteLoading(false);
@@ -193,6 +198,7 @@ const Profile = () => {
     Toastify({
       text: `${addedCondition} has be added to the chart`,
       duration: 3000,
+      position: "left",
     }).showToast();
     setDeleteLoading(false);
     setStateChange(!stateChange);
@@ -214,11 +220,13 @@ const Profile = () => {
       Toastify({
         text: `something went wrong`,
         duration: 3000,
+        position: "left",
       }).showToast();
     } else {
       Toastify({
         text: `${conditionName} has be removed from the chart`,
         duration: 3000,
+        position: "left",
       }).showToast();
     }
     setDeleteLoading(false);
@@ -228,14 +236,14 @@ const Profile = () => {
   return (
     <div className="profile-box">
       <div className="head-wrap">
-      <h2 className="web-name">Pill-Pal</h2>
+        <h2 className="web-name">Pill-Pal</h2>
         <h1 className="banner-title">Making medicine less scary</h1>
       </div>
       <div className="logged-in-buttons">
         <h4>
           Welcome,{" "}
           {Object.keys(userInfo).length !== 0
-            ? userInfo[0].full_name || userInfo[0].username
+            ? userInfo[0].username || userInfo[0].full_name
             : "User"}
           !
         </h4>
@@ -302,7 +310,7 @@ const Profile = () => {
                   ? conditionList()
                   : `N/A`}
                 <form className="profile-form" onChange={handleAddCondition}>
-                  <input placeholder="Add Condition" name="condition" />
+                  <input placeholder="Condition" name="condition" />
                   <br />
                   <button
                     onClick={(e) => {
@@ -321,7 +329,7 @@ const Profile = () => {
                   ? allergyList()
                   : `N/A`}
                 <form className="profile-form" onChange={handleAddAllergy}>
-                  <input placeholder="Add allergy" name="allergen" />
+                  <input placeholder="Allergy" name="allergen" />
                   <br />
                   <button
                     onClick={(e) => {

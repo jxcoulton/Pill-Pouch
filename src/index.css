@@ -5,11 +5,33 @@ body {
 }
 
 footer {
-  background-color: lightgray;
+  background-color: rgb(230, 222, 222);
   margin: 0px;
   padding: 1%;
   text-align: center;
   min-height: 10vh;
+  color: rgb(77, 76, 76);
+  font-size: 0.95rem;
+}
+
+input {
+  height: 30px;
+  font-size: 1.25rem;
+  padding: 5px;
+  border: 1px solid rgba(0, 0, 0, 0.25);
+}
+
+select {
+  height: 42px;
+  font-size: 1.25rem;
+  padding: 5px;
+  border: 1px solid rgba(0, 0, 0, 0.25);
+}
+
+label {
+  font-size: 0.95rem;
+  margin-bottom: 5px;
+  font-weight: bold;
 }
 
 .main-body {
@@ -27,15 +49,15 @@ footer {
 
 .head-wrap {
   width: 100%;
-  /* height: 33vh; */
+  height: 350px;
   display: inline-block;
   background-image: linear-gradient(
-      to top,
-      rgba(0, 0, 0, 0.61),
+      to bottom,
+      rgba(0, 0, 0, 0.75),
       rgba(255, 255, 255, 0)
     ),
     url("http://www.ljmu.ac.uk/~/media/ljmu/faculty_scs/pharmacy_and_biomolecular/research/banner/pharmacy_banner_pills2_1320x290.jpg");
-  background-size: 100%;
+  background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
   color: white;
@@ -43,25 +65,30 @@ footer {
 
 .banner-title {
   text-align: center;
-  font-size: 6vw;
+  font-size: 2rem;
 }
 
 .web-name {
-  text-align: left;
-  font-size: 3vw;
-  margin: 2% 0 0 1%;
+  text-align: center;
+  font-size: 6rem;
+  margin-top: 3rem;
+  margin-bottom: 0;
 }
 
 .login-box {
-  background-color: rgb(223, 223, 223);
+  background-color: rgb(230 222 222);
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 40%;
   height: 60%;
-  margin: 20px;
+  margin: 50px 20px;
   justify-content: center;
   justify-content: space-around;
+  border-color: #d4d4d4;
+  border-style: solid;
+  border-width: 2px;
+  color: rgb(77, 76, 76);
 }
 
 .login-form {
@@ -83,6 +110,14 @@ footer {
 .login-button {
   align-self: center;
   padding: 5px 20px;
+  background-color: #618bcf;
+  color: white;
+  font-weight: bold;
+  border: none;
+  text-transform: uppercase;
+}
+.login-button:hover {
+  background-color: #4f74af;
 }
 
 .logged-in-buttons {
@@ -97,6 +132,7 @@ footer {
 .edit-signout-button {
   width: 25px;
   margin-left: 35px;
+  border: none;
 }
 
 .body-wrap {
@@ -112,20 +148,21 @@ footer {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 50%;
+  width: calc(50% - 50px);
   font-size: 10px;
+  margin: 20px;
+  background-color: #efefef;
 }
 
 .resources-box {
+  background-color: #c1e7b5;
   transition-property: background-color;
-  transition-duration: 1s;
+  transition-duration: 0.5s;
 }
 .resources-box:hover {
-  background-color: #c1e7b5;
+  background-color: #a4da93;
 }
 .resource-pop-up {
-  border-color: #c1e7b5;
-  font-size: 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -157,16 +194,14 @@ a:hover {
 }
 
 .identify-box {
+  background-color: #bbc5ee;
   transition-property: background-color;
-  transition-duration: 1s;
+  transition-duration: 0.5s;
 }
 .identify-box:hover {
-  background-color: #bbc5ee;
+  background-color: #a3aedd;
 }
-.identify-pop-up {
-  border-color: #bbc5ee;
-  font-size: 20px;
-}
+
 .identify-box-line {
   width: 75%;
   min-height: 5px;
@@ -234,20 +269,19 @@ a:hover {
   justify-content: space-around;
 }
 .search-disclaimer {
-  font-size: 10px;
+  font-size: 15px;
 }
 
 .interaction-box {
+  background-color: #e9d3b5;
   transition-property: background-color;
-  transition-duration: 1s;
+  transition-duration: 0.5s;
 }
 .interaction-box:hover {
-  background-color: #c2e5ec;
+  background-color: #f0c78f;
 }
 .interaction-pop-up {
   margin-top: 35px;
-  border-color: #c2e5ec;
-  font-size: 20px;
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -256,7 +290,7 @@ a:hover {
 .interaction-box-line {
   width: 75%;
   min-height: 5px;
-  background-color: #c2e5ec;
+  background-color: #e9d3b5;
   margin-bottom: 30px;
 }
 .med-list-box {
@@ -278,16 +312,15 @@ a:hover {
 }
 
 .my-history-box {
+  background-color: #f1becf;
   transition-property: background-color;
-  transition-duration: 1s;
+  transition-duration: 0.5s;
 }
 .my-history-box:hover {
-  background-color: #f3b5f3;
+  background-color: #f1a6bf;
 }
 .my-history-pop-up {
   margin-top: 35px;
-  border-color: #f3b5f3;
-  font-size: 20px;
   width: 100%;
 }
 .my-history-body {
@@ -299,7 +332,7 @@ a:hover {
 .my-history-box-line {
   width: 75%;
   min-height: 5px;
-  background-color: #f3b5f3;
+  background-color: #f1becf;
   margin-bottom: 30px;
 }
 .my-history-sections {
@@ -334,6 +367,15 @@ a:hover {
 
 .submit-button {
   margin: 20px 45%;
+  padding: 5px 20px;
+  background-color: #618bcf;
+  color: white;
+  font-weight: bold;
+  border: none;
+  text-transform: uppercase;
+}
+.submit-button:hover {
+  background-color: #4f74af;
 }
 
 .box-image {
@@ -363,22 +405,23 @@ a:hover {
   height: 70%;
   max-height: 70vh;
   margin-top: calc(100vh - 85vh - 20px);
-  /* padding: 20px; */
+  padding: 20px;
   overflow: auto;
   border-style: solid;
-  border-width: 5px;
-  /* border-color: #a6d0e8; */
+  border-width: 2px;
+  border-color: #d0d0d0;
   border-radius: 10px;
   align-items: center;
   background-color: #f2f2f2;
   box-shadow: 0 0 14px black;
+  font-size: 20px;
 }
 
 .close-icon {
   content: "x";
   cursor: pointer;
   position: fixed;
-  right: calc(15% - 40px);
+  right: calc(15% - 45px);
   top: calc(100vh - 85vh - 33px);
   background: #ededed;
   width: 30px;
@@ -410,10 +453,10 @@ a:hover {
 .profile-page-body {
   display: flex;
   min-height: 50vh;
-  flex-direction: column;
+  flex-direction: row;
   justify-content: space-around;
   background-color: rgb(223, 223, 223);
-  align-items: center;
+  align-items: flex-start;
   width: 100%;
 }
 .profile-page-section {
@@ -442,8 +485,8 @@ a:hover {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-evenly;
-  align-items: center;
-  flex-direction: row;
+  align-items: flex-start;
+  flex-direction: column;
 }
 .profile-box-line {
   width: 75%;
@@ -455,9 +498,6 @@ a:hover {
   display: flex;
   flex-direction: column;
   align-items: center;
-}
-.extra-height {
-  min-height: 55vh;
 }
 
 .med-images {
@@ -481,6 +521,7 @@ li {
 
 h5 {
   margin: 10px;
+  text-transform: capitalize;
 }
 
 p {
@@ -527,22 +568,13 @@ circle {
   .main-body {
     min-height: 88vh;
   }
-  .resources-box {
-    background-color: #c1e7b5;
-  }
-
-  .identify-box {
-    background-color: #bbc5ee;
-  }
-  .interaction-box {
-    background-color: #c2e5ec;
-  }
-  .my-history-box {
-    background-color: #f3b5f3;
-  }
 }
 
 @media only screen and (max-width: 1367px) and (orientation: portrait) {
+  .bodyBox {
+    margin: 20px 0;
+    width: 100%;
+  }
   .main-body {
     min-height: 88vh;
   }
@@ -554,24 +586,6 @@ circle {
     flex-direction: column;
   }
 
-  .resources-box {
-    background-color: #c1e7b5;
-    width: 100%;
-  }
-  .resource-pop-up {
-    font-size: 16px;
-    padding: 15px;
-  }
-
-  .identify-box {
-    background-color: #bbc5ee;
-    width: 100%;
-  }
-  .identify-pop-up {
-    border-color: #bbc5ee;
-    font-size: 16px;
-    padding: 15px;
-  }
   .identify-form {
     align-items: flex-start;
     flex-direction: column;
@@ -581,23 +595,6 @@ circle {
     align-items: center;
   }
 
-  .interaction-box {
-    background-color: #c2e5ec;
-    width: 100%;
-  }
-  .interaction-pop-up {
-    font-size: 16px;
-    padding: 15px;
-  }
-
-  .my-history-box {
-    background-color: #f3b5f3;
-    width: 100%;
-  }
-  .my-history-pop-up {
-    font-size: 16px;
-    padding: 15px;
-  }
   .my-history-body {
     padding-left: 0;
     flex-direction: column;
@@ -635,5 +632,27 @@ circle {
   .current-meds-list {
     flex-wrap: nowrap;
     align-items: center;
+  }
+}
+
+@media only screen and (max-width: 768px) and (orientation: portrait) {
+  .web-name {
+    text-align: center;
+    font-size: 2.5rem;
+    margin-top: 0.5rem;
+    margin-bottom: 0;
+  }
+  .resource-list-box {
+    align-items: flex-start;
+  }
+}
+
+@media only screen and (max-width: 768px) and (orientation: landscape) {
+  .web-name {
+    font-size: 4rem;
+    margin-top: 2rem;
+  }
+  .head-wrap {
+    height: auto;
   }
 }
