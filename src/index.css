@@ -99,24 +99,19 @@ label {
 
 .forgot-password-link {
   align-self: center;
-  text-decoration: underline;
-  cursor: pointer;
+  margin: 10px;
 }
 
-.forgot-password-link:hover {
-  color: darkblue;
-}
-
-.login-button {
+.btn-primary {
   align-self: center;
-  padding: 5px 20px;
+  padding: 10px 20px;
   background-color: #618bcf;
   color: white;
   font-weight: bold;
   border: none;
   text-transform: uppercase;
 }
-.login-button:hover {
+.btn-primary:hover {
   background-color: #4f74af;
 }
 
@@ -142,6 +137,7 @@ label {
   justify-content: space-evenly;
   width: 100%;
   background-color: rgb(223, 223, 223);
+  margin-bottom: 30px;
 }
 
 .bodyBox {
@@ -189,8 +185,9 @@ a:hover {
   flex-wrap: wrap;
   align-items: center;
   background-color: #e4e4e4;
-  box-shadow: 0 0px 30px #c6c6c6a1;
-  width: 100%;
+  width: 92%;
+  padding: 20px;
+  margin: 10px;
 }
 
 .identify-box {
@@ -214,8 +211,9 @@ a:hover {
   flex-wrap: wrap;
   justify-content: center;
   background-color: #e4e4e4;
-  box-shadow: 0 0px 30px #c6c6c6a1;
-  width: 100%;
+  width: 92%;
+  padding: 20px;
+  margin: 10px;
 }
 .current-meds-list {
   display: flex;
@@ -299,16 +297,18 @@ a:hover {
   flex-wrap: wrap;
   justify-content: space-evenly;
   background-color: #e4e4e4;
-  box-shadow: 0 0px 30px #c6c6c6a1;
-  width: 100%;
+  width: 92%;
+  padding: 20px;
+  margin: 10px;
 }
 .interaction-list-box {
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
   background-color: #e4e4e4;
-  box-shadow: 0 0px 30px #c6c6c6a1;
-  width: 100%;
+  width: 92%;
+  padding: 20px;
+  margin: 10px;
 }
 
 .my-history-box {
@@ -353,8 +353,9 @@ a:hover {
   display: flex;
   flex-direction: column;
   background-color: #e4e4e4;
-  box-shadow: 0 0px 30px #c6c6c6a1;
-  width: 100%;
+  width: 92%;
+  padding: 20px;
+  margin: 10px;
   align-items: center;
   flex-wrap: wrap;
 }
@@ -367,7 +368,7 @@ a:hover {
 
 .submit-button {
   margin: 20px 45%;
-  padding: 5px 20px;
+  padding: 10px 20px;
   background-color: #618bcf;
   color: white;
   font-weight: bold;
@@ -458,6 +459,7 @@ a:hover {
   background-color: rgb(223, 223, 223);
   align-items: flex-start;
   width: 100%;
+  margin-bottom: 30px;
 }
 .profile-page-section {
   display: flex;

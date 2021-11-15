@@ -50,8 +50,10 @@ export function Login() {
           <br />
           <label htmlFor="input-password">Password</label>
           <input id="input-password" type="password" ref={passwordRef} />
-          <p className="forgot-password-link">Forgot password?</p>
-          <button className="login-button" type="submit">
+          <a className="forgot-password-link" href="#">
+            Forgot password?
+          </a>
+          <button className="btn-primary" type="submit">
             LOGIN
           </button>
         </form>

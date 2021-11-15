@@ -31,7 +31,7 @@ export function Signup() {
   return (
     <div className="main-body">
       <div className="head-wrap">
-      <h2 className="web-name">Pill-Pal</h2>
+        <h2 className="web-name">Pill-Pal</h2>
         <h1 className="banner-title">Making medicine less scary</h1>
       </div>
       <div className="login-box">
@@ -44,7 +44,7 @@ export function Signup() {
           <input id="input-password" type="password" ref={passwordRef} />
           <br />
           <br />
-          <button className="login-button" type="submit">
+          <button className="btn-primary" type="submit">
             Sign up
           </button>
         </form>

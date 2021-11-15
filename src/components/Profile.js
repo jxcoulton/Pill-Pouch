@@ -289,6 +289,7 @@ const Profile = () => {
                 onClick={(e) => {
                   updateName(e);
                 }}
+                className="btn-primary"
               >
                 Update Profile
               </button>
@@ -316,6 +317,7 @@ const Profile = () => {
                     onClick={(e) => {
                       updateCondition(e);
                     }}
+                    className="btn-primary"
                   >
                     Add Condition
                   </button>
@@ -332,6 +334,7 @@ const Profile = () => {
                   <input placeholder="Allergy" name="allergen" />
                   <br />
                   <button
+                    className="btn-primary"
                     onClick={(e) => {
                       updateAllergy(e);
                     }}
@@ -375,6 +378,7 @@ const Profile = () => {
               />
               <br />
               <button
+                className="btn-primary"
                 onClick={(e) => {
                   updateEC(e);
                 }}
