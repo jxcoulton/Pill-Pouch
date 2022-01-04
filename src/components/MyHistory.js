@@ -112,9 +112,11 @@ const MyHistory = () => {
                   </div>
                   <div className="my-history-block-sections">
                     <div className="found-meds-list">
-                      <h5>{Object.keys(userInfo).length !== 0
-                        ? userInfo[0].full_name
-                        : `N/A`}</h5>
+                      <h5>
+                        {Object.keys(userInfo).length !== 0
+                          ? userInfo[0].full_name
+                          : `N/A`}
+                      </h5>
                     </div>
                   </div>
                   <div className="profile-space-break">
