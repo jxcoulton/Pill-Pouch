@@ -12,9 +12,6 @@ const Identify = () => {
     useContext(UserDataContext);
 
   const initialFormData = {
-    color: "",
-    imprint: "",
-    shape: "",
     name: "",
   };
   const [isOpen, setIsOpen] = useState(false);
@@ -32,7 +29,7 @@ const Identify = () => {
     const value =
       e.target.value === ""
         ? ""
-        : `&${e.target.name}=${e.target.value.replace(/ /g, "%20")}`;
+        : `${e.target.value}`;
     setFormData({
       ...formData,
       [e.target.name]: value,
@@ -94,72 +91,43 @@ const Identify = () => {
     setStateChange(!stateChange);
   }
 
+  function findProp(obj, prop) {
+    var result = [];
+    function recursivelyFindProp(o, keyToBeFound) {
+      Object.keys(o).forEach(function (key) {
+        if (typeof o[key] === "object") {
+          recursivelyFindProp(o[key], keyToBeFound);
+        } else {
+          if (key === keyToBeFound && !!o.name) result.push(o);
+          result.push(o)
+        }
+      });
+    }
+    recursivelyFindProp(obj, prop);
+    return result;
+  }
+
   const fetchByPill = (e) => {
     e.preventDefault();
-    if (e.target[3].value === "") {
-      axios
-        .get(
-          `https://rximage.nlm.nih.gov/api/rximage/1/rxnav?${formData.color}${formData.imprint}${formData.shape}&rLimit=20&resolution=600`
-        )
-        .then((res) => {
-          const medications = [];
-          const items = res.data.nlmRxImages;
-          items.forEach((drug, index) => {
-            drug.name !== "" &&
-              medications.push(
-                <li className="returned-med-card" id={drug.rxcui} key={index}>
-                  <img
-                    className="med-images"
-                    src={drug.imageUrl}
-                    alt={drug.name}
-                  />
-                  <h5>{drug.name}</h5>
-                  <button className="btn-primary" onClick={addToCurrentMeds}>
-                    Add to my chart
-                  </button>
-                </li>
-              );
-          });
-          medications.length === 0
-            ? setFoundMeds(<h2 className="identify-sections">No results</h2>)
-            : setFoundMeds(
-                <div className="identify-sections">
-                  <h1>Results</h1>
-                  <div className="identify-box-line"></div>
-                  <div className="found-meds-list">{medications}</div>
-                </div>
-              );
-        });
-    } else if (e.target[3].value !== "") {
-      axios
-        .get(
-          `https://rximage.nlm.nih.gov/api/rximage/1/rxnav?${formData.name}&rLimit=20&resolution=600`
-        )
-        .then((res) => {
-          const medications = [];
-          const items = res.data.nlmRxImages.sort((a, b) => {
+    axios
+      .get(`https://rxnav.nlm.nih.gov/REST/drugs.json?name=${formData.name}`)
+      .then((res) => {
+        const results = res.data.drugGroup.conceptGroup;
+        const medications = [];
+        if (typeof results !== "undefined") {
+          let found = findProp(results, "conceptProperties")
+          const items = found.sort((a, b) => {
             return a.rxcui - b.rxcui;
           });
           items.forEach((drug, index) => {
-            if (index > 0) {
+            if (!drug.name) {
+            } else if (index > 0) {
               if (drug.rxcui !== items[index - 1].rxcui) {
                 drug.name !== "" &&
                   medications.push(
-                    <li
-                      className="returned-med-card"
-                      id={drug.rxcui}
-                      key={index}
-                    >
-                      <img
-                        className="med-images"
-                        src={drug.imageUrl}
-                        alt={drug.name}
-                      />
+                    <li className="returned-med-card" id={drug.rxcui} key={index}>
                       <h5>{drug.name}</h5>
-                      <button
-                        className="btn-primary"
-                        onClick={addToCurrentMeds}
-                      >
+                      <button className="btn-primary" onClick={addToCurrentMeds}>
                         Add to my chart
                       </button>
                     </li>
@@ -169,11 +137,6 @@ const Identify = () => {
               drug.name !== "" &&
                 medications.push(
                   <li className="returned-med-card" id={drug.rxcui} key={index}>
-                    <img
-                      className="med-images"
-                      src={drug.imageUrl}
-                      alt={drug.name}
-                    />
                     <h5>{drug.name}</h5>
                     <button className="btn-primary" onClick={addToCurrentMeds}>
                       Add to my chart
@@ -185,14 +148,21 @@ const Identify = () => {
           medications.length === 0
             ? setFoundMeds(<h2 className="identify-sections">No results</h2>)
             : setFoundMeds(
-                <div className="identify-sections">
-                  <h1>Results</h1>
-                  <div className="identify-box-line"></div>
-                  <div className="found-meds-list">{medications}</div>
-                </div>
-              );
-        });
-    }
+              <div className="identify-sections">
+                <h1>Results</h1>
+                <div className="identify-box-line"></div>
+                <div className="found-meds-list">{medications}</div>
+              </div>
+            );
+        }  else {
+          Toastify({
+            text: `No results found for ${formData.name}`,
+            duration: 3000,
+            position: "left",
+          }).showToast();
+        }
+      });
+    // }
     e.target.reset();
     setFormData(initialFormData);
   };
@@ -243,62 +213,10 @@ const Identify = () => {
               <div className="med-list-find-box">
                 <form onChange={handleChange} onSubmit={(e) => fetchByPill(e)}>
                   <div className="identify-form">
-                    <h4>Color</h4>
-                    <select name="color">
-                      <option value="">Select a color</option>
-                      <option value="black">Black</option>
-                      <option value="gray">Gray</option>
-                      <option value="white">White</option>
-                      <option value="red">Red</option>
-                      <option value="purple">Purple</option>
-                      <option value="pink">Pink</option>
-                      <option value="green">Green</option>
-                      <option value="yellow">Yellow</option>
-                      <option value="orange">Orange</option>
-                      <option value="brown">Brown</option>
-                      <option value="blue">Blue</option>
-                      <option value="turquoise">Turquoise</option>
-                    </select>
-                    <h4>Imprint</h4>
-                    <input type="text" name="imprint" placeholder="imprint" />
-                    <h4>Shape</h4>
-                    <select name="shape">
-                      <option value="">Select a shape</option>
-                      <option value="bullet">Bullet</option>
-                      <option value="capsule">Capsule</option>
-                      <option value="clover">Clover</option>
-                      <option value="diamond">Diamond</option>
-                      <option value="double%20circle">Double Circle</option>
-                      <option value="freeform">Freeform</option>
-                      <option value="gear">Gear</option>
-                      <option value="heptagon">Heptagon</option>
-                      <option value="hexagon">Hexagon</option>
-                      <option value="octagon">Octagon</option>
-                      <option value="oval">Oval</option>
-                      <option value="pentagon">Pentagon</option>
-                      <option value="rectangle">Rectangle</option>
-                      <option value="round">Round</option>
-                      <option value="semi-circle">Semi-Circle</option>
-                      <option value="square">Square</option>
-                      <option value="tear">Tear Drop</option>
-                      <option value="trapezoid">Trapezoid</option>
-                      <option value="triangle">Triangle</option>
-                    </select>
-                    <br />
-                  </div>
-                  <div className="or-space">
-                    <div className="space-break">
-                      <div className="space-line"></div>
-                      OR
-                      <div className="space-line"></div>
-                    </div>
-                  </div>
-                  <div className="identify-form">
                     <h4>Name</h4>
                     <input type="text" name="name" placeholder="name" />
                     <p className="search-disclaimer">
-                      *when searching by name, images may differ from your
-                      prescription*
+                      *when searching do not enter strength*
                     </p>
                     <button className="submit-button" type="submit">
                       Search
