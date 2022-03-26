@@ -1,14 +1,34 @@
 import { useRef } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { useAuth } from "../contexts/Auth";
+import AppBar from "./AppBar";
+import Footer from "./Footer";
+import { Box } from "@mui/system";
+import { Typography } from "@mui/material";
+import { TextField } from "@mui/material";
+import { useTheme } from "@mui/system";
+import { Button } from "@mui/material";
 import Toastify from "toastify-js";
 import "toastify-js/src/toastify.css";
+
+const style = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 400,
+  height: 200,
+  bgcolor: "white",
+  p: 4,
+  borderRadius: "10px",
+};
 
 export function Signup() {
   const emailRef = useRef();
   const passwordRef = useRef();
   const { signUp } = useAuth();
   const history = useHistory();
+  const theme = useTheme();
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -29,29 +49,80 @@ export function Signup() {
   }
 
   return (
-    <div className="main-body">
-      <div className="head-wrap">
-        <h2 className="web-name">Pill-Pal</h2>
-        <h1 className="banner-title">Medication management simplified</h1>
-      </div>
-      <div className="login-box">
-        <h2>Create an account</h2>
-        <form onSubmit={handleSubmit} className="login-form">
-          <label htmlFor="input-email">Email</label>
-          <input id="input-email" type="email" ref={emailRef} />
-          <br />
-          <label htmlFor="input-password">Password</label>
-          <input id="input-password" type="password" ref={passwordRef} />
-          <br />
-          <br />
-          <button className="btn-primary" type="submit">
-            Sign up
-          </button>
+    <Box sx={{ bgcolor: "primary.main", width: "100vw", height: "100vh" }}>
+      <Typography variant="h4" sx={{ paddingTop: "20px", paddingLeft: "24px" }}>
+        Pill-Pal
+      </Typography>
+      <Typography
+        variant="h5"
+        sx={{
+          position: "absolute",
+          top: "27%",
+          left: "50%",
+          transform: "translate(-50%, -50%)",
+        }}
+      >
+        Create an Account!
+      </Typography>
+      <Box sx={style}>
+        <form
+          onSubmit={handleSubmit}
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "space-around",
+            width: "100%",
+            height: "100%",
+          }}
+        >
+          <TextField
+            // name="email"
+            theme={theme}
+            required
+            type="email"
+            inputRef={emailRef}
+            label="Email"
+          />
+          <TextField
+            // name="password"
+            theme={theme}
+            required
+            type="password"
+            inputRef={passwordRef}
+            label="Password"
+          />
+          <Button
+            variant="contained"
+            type="submit"
+            theme={theme}
+            sx={{ padding: "15px" }}
+          >
+            Sign Up
+          </Button>
         </form>
-        <p>
-          Already have an account? <Link to="/login">Log In</Link>
-        </p>
-      </div>
-    </div>
+      </Box>
+      <Typography
+        variant="button"
+        sx={{
+          position: "absolute",
+          top: "70%",
+          left: "50%",
+          transform: "translate(-50%, -50%)",
+        }}
+      >
+        Already Have an Account? <Link to="/login">LogIn</Link>
+      </Typography>
+      <Box
+        sx={{
+          position: "absolute",
+          top: "90%",
+          left: "50%",
+          transform: "translate(-50%, -50%)",
+          width: "100%",
+        }}
+      >
+        <Footer />
+      </Box>
+    </Box>
   );
 }
