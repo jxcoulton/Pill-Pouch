@@ -67,7 +67,7 @@ const Identify = () => {
         <InputBase
           name="medication"
           type="search"
-          placeholder="Search Drugs..."
+          placeholder="Search Medications..."
           sx={{ paddingLeft: "20px", width: "100%" }}
         />
         <IconButton>
