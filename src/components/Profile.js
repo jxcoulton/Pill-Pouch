@@ -3,8 +3,7 @@ import ProfileConditions from "./ProfileConditions";
 import ProfileMedications from "./ProfileMedications";
 import ProfileEmergencyContact from "./ProfileEmergencyContact";
 import ProfileUser from "./ProfileUser";
-import { Grid } from "@mui/material";
-import { Card } from "@mui/material";
+import { Grid, Card } from "@mui/material";
 import { useTheme } from "@mui/system";
 
 const Profile = () => {

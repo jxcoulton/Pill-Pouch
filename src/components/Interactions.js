@@ -1,12 +1,10 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext } from "react";
 import axios from "axios";
 import ProfileMedications from "./ProfileMedications";
 import UserDataContext from "../contexts/userData";
-import { Typography, useTheme } from "@mui/material";
-import { Button } from "@mui/material";
-import { Card } from "@mui/material";
-import { Grid } from "@mui/material";
+import { Typography, useTheme, Button, Card, Box } from "@mui/material";
 
+//function to find interactions in API results
 function findProp(obj, prop) {
   var result = [];
   function recursivelyFindProp(o, keyToBeFound) {
@@ -28,10 +26,12 @@ const Interactions = () => {
   const theme = useTheme();
 
   const submitCompare = () => {
+    //concat all the ids to input into the API call to search interactions
     let rxcuiString = "";
     currentMeds.forEach((drug) => {
       rxcuiString += `${drug.rxcui}+`;
     });
+
     axios
       .get(
         `https://rxnav.nlm.nih.gov/REST/interaction/list.json?rxcuis=${rxcuiString}`
@@ -39,8 +39,7 @@ const Interactions = () => {
       .then((res) => {
         const { data } = res;
         const interactionsDisplay = findProp(data, "description");
-        let interactionList = [];
-        interactionList = interactionsDisplay.map((detail, index) => {
+        let interactionList = interactionsDisplay.map((detail, index) => {
           if (index > 0) {
             if (detail !== interactionsDisplay[index - 1]) {
               return <p key={index}>{detail}</p>;
@@ -52,13 +51,10 @@ const Interactions = () => {
         });
         setInteractions(
           interactionList.length !== 0 ? (
-            <Card
-              variant="outlined"
-              theme={theme}
-              style={{ display: "flex", flexDirection: "column" }}
-            >
-              <Typography variant="h5">Results</Typography> {interactionList}
-            </Card>
+            <>
+              <Typography variant="h5">Results</Typography>
+              {interactionList}
+            </>
           ) : (
             <p>No Interactions</p>
           )
@@ -67,19 +63,37 @@ const Interactions = () => {
   };
 
   return (
-    <>
+    <Box style={{ display: "flex", flexDirection: "column" }}>
       <Card
         variant="outlined"
         theme={theme}
-        style={{ display: "flex", flexDirection: "column" }}
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          width: "50%",
+          alignSelf: "center",
+        }}
       >
         <ProfileMedications />
         <Button variant="contained" onClick={submitCompare} theme={theme}>
           Search Interactions
         </Button>
       </Card>
-      {interactions}
-    </>
+      {interactions && (
+        <Card
+          variant="outlined"
+          theme={theme}
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            width: "50%",
+            alignSelf: "center",
+          }}
+        >
+          {interactions}
+        </Card>
+      )}
+    </Box>
   );
 };
 export default Interactions;

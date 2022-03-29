@@ -7,6 +7,7 @@ import { IconButton } from "@mui/material";
 import Toastify from "toastify-js";
 import "toastify-js/src/toastify.css";
 
+//function to find medication in API results
 function findProp(obj, prop) {
   var result = [];
   function recursivelyFindProp(o, keyToBeFound) {
@@ -32,20 +33,17 @@ const Identify = () => {
     setFormData(e.target.value);
   };
 
+  //API call to find medication
   const fetchByPill = (e) => {
     e.preventDefault();
     axios
       .get(`https://rxnav.nlm.nih.gov/REST/drugs.json?name=${formData}`)
       .then((res) => {
         const results = res.data.drugGroup.conceptGroup;
-
         if (typeof results !== "undefined") {
+          //searching for the medications with a function
           let found = findProp(results, "conceptProperties");
-          const items = found.sort((a, b) => {
-            return a.rxcui - b.rxcui;
-          });
-
-          !!items && setFoundMeds(items);
+          !!found && setFoundMeds(found);
           setOpenDialog(true);
         } else {
           Toastify({
@@ -69,7 +67,7 @@ const Identify = () => {
         <InputBase
           name="medication"
           type="search"
-          placeholder="Medication Search..."
+          placeholder="Search Drugs..."
           sx={{ paddingLeft: "20px", width: "100%" }}
         />
         <IconButton>

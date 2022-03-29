@@ -1,10 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useAuth } from "../contexts/Auth";
 import { supabase } from "../supabase";
-import { Button } from "@mui/material";
-import { TextField } from "@mui/material";
-import { useTheme } from "@mui/material";
-import { Typography } from "@mui/material";
+import { Button, TextField, useTheme, Typography } from "@mui/material";
 import Toastify from "toastify-js";
 
 const ProfileEmergencyContact = () => {
@@ -14,6 +11,7 @@ const ProfileEmergencyContact = () => {
   const [resendEC, setResendEC] = useState();
   const theme = useTheme();
 
+  //get emergency contact info from database on change to user or update
   useEffect(() => {
     const fetchUserEmerContact = async () => {
       try {
@@ -21,7 +19,7 @@ const ProfileEmergencyContact = () => {
           .from("emergency_contact")
           .select("*")
           .eq("user_id", user?.id);
-        if (error) setUserEmerContact([]);
+        if (error) throw new Error(error);
         if (data) {
           if (data.length === 0) {
             await supabase
@@ -45,6 +43,7 @@ const ProfileEmergencyContact = () => {
     });
   };
 
+  //update database emergency contact
   const updateEC = async (e) => {
     e.preventDefault();
     const { error } = await supabase
@@ -54,7 +53,7 @@ const ProfileEmergencyContact = () => {
     if (error) throw error;
 
     Toastify({
-      text: `emergency contact has been updated`,
+      text: `Emergency contact information updated`,
       duration: 3000,
       position: "left",
     }).showToast();

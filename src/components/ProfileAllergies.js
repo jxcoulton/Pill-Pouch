@@ -2,10 +2,8 @@ import React, { useState, useEffect } from "react";
 import { useAuth } from "../contexts/Auth";
 import { supabase } from "../supabase";
 import TextField from "@mui/material/TextField";
-import { IconButton } from "@mui/material";
-import { Typography } from "@mui/material";
+import { Typography, Button } from "@mui/material";
 import { useTheme } from "@mui/system";
-import { Button } from "@mui/material";
 import Toastify from "toastify-js";
 
 const ProfileAllergies = () => {
@@ -15,6 +13,7 @@ const ProfileAllergies = () => {
   const [updateAllergies, setUpdateAllergies] = useState([]);
   const theme = useTheme();
 
+  //get database allergies on change to user or when allergies updated
   useEffect(() => {
     const fetchUserAllergies = async () => {
       try {
@@ -22,7 +21,7 @@ const ProfileAllergies = () => {
           .from("allergies")
           .select("*")
           .eq("user_id", user?.id);
-        if (error) throw new Error(error); //TODO
+        if (error) throw new Error(error);
         if (data) setUserAllergies(data);
       } catch (error) {
         setUserAllergies([]);
@@ -31,6 +30,11 @@ const ProfileAllergies = () => {
     fetchUserAllergies();
   }, [user, updateAllergies, setUserAllergies]);
 
+  const handleAddAllergy = (e) => {
+    setAddedAllergy(e.target.value);
+  };
+
+  //map allergies to display
   const allergyList = () => {
     let allergies = userAllergies.map((allergy, index) => {
       return (
@@ -42,7 +46,7 @@ const ProfileAllergies = () => {
             alignItems: "center",
             margin: "5px",
             justifyContent: "space-between",
-            textTransform: "capitalize"
+            textTransform: "capitalize",
           }}
         >
           {allergy.allergen}
@@ -60,10 +64,7 @@ const ProfileAllergies = () => {
     return allergies;
   };
 
-  const handleAddAllergy = (e) => {
-    setAddedAllergy(e.target.value);
-  };
-
+  //add allergy to database
   const updateAllergy = async (e) => {
     e.preventDefault();
     if (!!addedAllergy && addedAllergy.length > 0) {
@@ -71,9 +72,10 @@ const ProfileAllergies = () => {
         .from("allergies")
         .insert({ allergen: addedAllergy, user_id: user?.id })
         .eq("user_id", user?.id);
-
       Toastify({
-        text: `${addedAllergy} allergy has been added`,
+        text: `${
+          addedAllergy.charAt(0).toUpperCase() + addedAllergy.slice(1)
+        } allergy has been added`,
         duration: 3000,
         position: "left",
       }).showToast();
@@ -89,6 +91,7 @@ const ProfileAllergies = () => {
     e.target.reset();
   };
 
+  //delete allergy from database
   async function deleteCurrentAllergy(e) {
     e.preventDefault();
     const allergyId = e.target.parentElement.id;
@@ -100,13 +103,15 @@ const ProfileAllergies = () => {
       .eq("allergy_id", allergyId);
     if (error) {
       Toastify({
-        text: `something went wrong`,
+        text: `Something went wrong`,
         duration: 3000,
         position: "left",
       }).showToast();
     } else {
       Toastify({
-        text: `${allergyName} allergy has been removed`,
+        text: `${
+          allergyName.charAt(0).toUpperCase() + allergyName.slice(1)
+        } allergy has been removed`,
         duration: 3000,
         position: "left",
       }).showToast();

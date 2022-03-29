@@ -1,22 +1,18 @@
-import React, { useContext } from "react";
+import React from "react";
 import SearchAppBar from "./AppBar";
-// import SignOut from "./SignOut";
 import Profile from "./Profile";
 import Interactions from "./Interactions";
 import Resources from "./Resources";
 import Footer from "./Footer";
-import UserDataContext from "../contexts/userData";
 import Box from "@mui/material/Box";
 import TabContext from "@mui/lab/TabContext";
-import { Tabs } from "@mui/material";
 import Tab from "@mui/material/Tab";
 import TabPanel from "@mui/lab/TabPanel";
-import { Typography } from "@mui/material";
+import { Tabs } from "@mui/material";
 import { useTheme } from "@mui/system";
 
 export function Dashboard() {
   const [value, setValue] = React.useState("1");
-  const { userInfo } = useContext(UserDataContext);
   const theme = useTheme();
 
   const handleChange = (_, newValue) => {
@@ -26,7 +22,7 @@ export function Dashboard() {
   return (
     <div className="main-body">
       <SearchAppBar />
-      <Box sx={{ minHeight: "80vh" }}>
+      <Box sx={{ minHeight: "85vh" }}>
         <TabContext value={value}>
           <Box
             sx={{

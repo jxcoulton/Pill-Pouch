@@ -2,10 +2,7 @@ import React, { useState, useContext, useEffect } from "react";
 import { useAuth } from "../contexts/Auth";
 import { supabase } from "../supabase";
 import UserDataContext from "../contexts/userData";
-import { Button } from "@mui/material";
-import { TextField } from "@mui/material";
-import { useTheme } from "@mui/material";
-import { Typography } from "@mui/material";
+import { Button, TextField, useTheme, Typography } from "@mui/material";
 import Toastify from "toastify-js";
 
 const ProfileUser = () => {
@@ -15,6 +12,7 @@ const ProfileUser = () => {
   const [resendProfile, setResendProfile] = useState();
   const theme = useTheme();
 
+  //fetch user info from database
   useEffect(() => {
     const fetchUserInfo = async () => {
       try {
@@ -22,7 +20,7 @@ const ProfileUser = () => {
           .from("profiles")
           .select("*")
           .eq("user_id", user?.id);
-        if (error) setUserInfo([]);
+        if (error) throw new Error(error);
         if (data) {
           if (data.length === 0) {
             await supabase
@@ -46,17 +44,16 @@ const ProfileUser = () => {
     });
   };
 
+  //retrieve updated profile info
   const updateName = async (e) => {
     e.preventDefault();
-
     const { error } = await supabase
       .from("profiles")
       .update(updateUserProfile)
       .eq("user_id", user?.id);
     if (error) throw error;
-
     Toastify({
-      text: `your profile has been updated`,
+      text: `Profile information updated`,
       duration: 3000,
       position: "left",
     }).showToast();

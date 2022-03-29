@@ -7,8 +7,8 @@ import { UserDataProvider } from "../contexts/userData";
 import { PrivateRoute } from "./PrivateRoute";
 import { createTheme } from "@mui/material/styles";
 import { ThemeProvider } from "@mui/private-theming";
-import { color, palette } from "@mui/system";
 
+//default theme to ref palette
 const colorTheme = createTheme({
   palette: {
     primary: {
@@ -20,6 +20,7 @@ const colorTheme = createTheme({
   },
 });
 
+//provider palette / component styles
 const theme = createTheme({
   palette: {
     primary: {
@@ -74,6 +75,7 @@ const theme = createTheme({
               borderColor: colorTheme.palette.secondary.main,
             },
           },
+          input: { textTransform: "capitalize" },
         },
       },
     },
@@ -89,6 +91,13 @@ const theme = createTheme({
         root: {
           color: colorTheme.palette.primary.contrastText,
           padding: "10px",
+        },
+      },
+    },
+    MuiInput: {
+      styleOverrides: {
+        input: {
+          textTransform: "capitalize",
         },
       },
     },

@@ -1,16 +1,16 @@
 import React from "react";
 import { Route, Redirect } from "react-router-dom";
-
 import { useAuth } from "../contexts/Auth";
+import { Dashboard } from "./Dashboard";
 
-export function PrivateRoute({ component: Component, ...rest }) {
+export function PrivateRoute() {
   const { user } = useAuth();
 
+  //route to dashboard verify if user exist allow to dashboard else direct to login page
   return (
     <Route
-      {...rest}
-      render={(props) => {
-        return user ? <Component {...props} /> : <Redirect to="/login" />;
+      render={() => {
+        return user ? <Dashboard /> : <Redirect to="/login" />;
       }}
     ></Route>
   );

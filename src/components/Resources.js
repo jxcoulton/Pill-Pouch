@@ -1,16 +1,19 @@
 import React from "react";
-import { Typography } from "@mui/material";
-import { Link } from "@mui/material";
-import { useTheme } from "@mui/system";
-import { Card } from "@mui/material";
+import { Link, Card, Typography, useTheme } from "@mui/material";
 
 const Resources = () => {
   const theme = useTheme();
+
   return (
     <Card theme={theme} variant="outlined">
       <Typography
         variant="button"
-        sx={{ display: "flex", flexDirection: "column" }}
+        sx={{
+          display: "flex",
+          flexDirection: "row",
+          flexWrap: "wrap",
+          justifyContent: "space-evenly",
+        }}
       >
         <Link
           theme={theme}

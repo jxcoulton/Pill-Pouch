@@ -2,10 +2,8 @@ import React, { useState, useEffect } from "react";
 import { useAuth } from "../contexts/Auth";
 import { supabase } from "../supabase";
 import TextField from "@mui/material/TextField";
-import { IconButton } from "@mui/material";
-import { Typography } from "@mui/material";
+import { Typography, Button } from "@mui/material";
 import { useTheme } from "@mui/system";
-import { Button } from "@mui/material";
 import Toastify from "toastify-js";
 
 const ProfileConditions = () => {
@@ -15,6 +13,7 @@ const ProfileConditions = () => {
   const [updateConditions, setUpdateConditions] = useState([]);
   const theme = useTheme();
 
+  //get conditions from database on change to user of condition update
   useEffect(() => {
     const fetchUserConditions = async () => {
       try {
@@ -22,7 +21,7 @@ const ProfileConditions = () => {
           .from("conditions")
           .select("*")
           .eq("user_id", user?.id);
-        if (error) setUserConditions([]);
+        if (error) throw new Error(error);
         if (data) setUserConditions(data);
       } catch (error) {
         setUserConditions([]);
@@ -31,6 +30,11 @@ const ProfileConditions = () => {
     fetchUserConditions();
   }, [user, updateConditions, setUserConditions]);
 
+  const handleAddCondition = (e) => {
+    setAddedCondition(e.target.value);
+  };
+
+  //map conditions to display
   const conditionList = () => {
     const conditions = userConditions.map((condition, index) => {
       return (
@@ -60,10 +64,7 @@ const ProfileConditions = () => {
     return conditions;
   };
 
-  const handleAddCondition = (e) => {
-    setAddedCondition(e.target.value);
-  };
-
+  //add condition to database
   const updateCondition = async (e) => {
     e.preventDefault();
     if (!!addedCondition && addedCondition.length > 0) {
@@ -73,7 +74,9 @@ const ProfileConditions = () => {
         .eq("user_id", user?.id);
 
       Toastify({
-        text: `${addedCondition} has been added to the chart`,
+        text: `${
+          addedCondition.charAt(0).toUpperCase() + addedCondition.slice(1)
+        } has been added to the chart`,
         duration: 3000,
         position: "left",
       }).showToast();
@@ -89,6 +92,7 @@ const ProfileConditions = () => {
     e.target.reset();
   };
 
+  //condition removed from database
   async function deleteCurrentCondition(e) {
     e.preventDefault();
     const conditionId = e.target.parentElement.id;
@@ -100,13 +104,15 @@ const ProfileConditions = () => {
       .eq("condition_id", conditionId);
     if (error) {
       Toastify({
-        text: `something went wrong`,
+        text: `Something went wrong`,
         duration: 3000,
         position: "left",
       }).showToast();
     } else {
       Toastify({
-        text: `${conditionName} has been removed from the chart`,
+        text: `${
+          conditionName.charAt(0).toUpperCase() + conditionName.slice(1)
+        } has been removed from the chart`,
         duration: 3000,
         position: "left",
       }).showToast();

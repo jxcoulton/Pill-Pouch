@@ -1,26 +1,10 @@
 import { useRef } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { useAuth } from "../contexts/Auth";
-import AppBar from "./AppBar";
 import Footer from "./Footer";
-import { Box } from "@mui/system";
-import { Typography, TextField } from "@mui/material";
-import { useTheme } from "@mui/system";
-import { Button } from "@mui/material";
+import { Box, Typography, TextField, Button, useTheme } from "@mui/material";
 import Toastify from "toastify-js";
 import "toastify-js/src/toastify.css";
-
-const style = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: 400,
-  height: 200,
-  bgcolor: "white",
-  p: 4,
-  borderRadius: "10px",
-};
 
 export function Signup() {
   const emailRef = useRef();
@@ -35,10 +19,9 @@ export function Signup() {
     const password = passwordRef.current.value;
 
     const { error } = await signUp({ email, password });
-
     if (error) {
       Toastify({
-        text: `error signing up`,
+        text: `Error signing up`,
         duration: 3000,
         position: "left",
       }).showToast();
@@ -48,78 +31,87 @@ export function Signup() {
   }
 
   return (
-    <Box sx={{ bgcolor: "primary.main", width: "100vw", height: "100vh" }}>
+    <Box
+      sx={{
+        bgcolor: "primary.main",
+        width: "100vw",
+        height: "100vh",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "space-between",
+      }}
+    >
       <Typography variant="h4" sx={{ paddingTop: "20px", paddingLeft: "24px" }}>
         Pill-Pal
       </Typography>
-      <Typography
-        variant="h5"
-        sx={{
-          position: "absolute",
-          top: "27%",
-          left: "50%",
-          transform: "translate(-50%, -50%)",
-        }}
+      <Box
+        sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}
       >
-        Create an Account!
-      </Typography>
-      <Box sx={style}>
-        <form
-          onSubmit={handleSubmit}
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "space-around",
-            width: "100%",
-            height: "100%",
+        <Typography
+          variant="h5"
+          sx={{
+            marginBottom: "30px",
           }}
         >
-          <TextField
-            // name="email"
-            theme={theme}
-            required
-            type="email"
-            inputRef={emailRef}
-            label="Email"
-          />
-          <TextField
-            // name="password"
-            theme={theme}
-            required
-            type="password"
-            inputRef={passwordRef}
-            label="Password"
-          />
-          <Button
-            variant="contained"
-            type="submit"
-            theme={theme}
-            sx={{ padding: "15px" }}
+          Create an Account!
+        </Typography>
+        <Box
+          sx={{
+            bgcolor: theme.palette.background.default,
+            p: 4,
+            borderRadius: "10px",
+            alignSelf: "center",
+            minWidth: "300px",
+            width: "30%",
+            display: "flex",
+            flexDirection: "column",
+          }}
+        >
+          <form
+            onSubmit={handleSubmit}
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "space-around",
+              width: "100%",
+              height: "100%",
+            }}
           >
-            Sign Up
-          </Button>
-        </form>
+            <TextField
+              name="email"
+              theme={theme}
+              required
+              type="email"
+              inputRef={emailRef}
+              label="Email"
+              inputProps={{ style: { textTransform: "inherit" } }}
+              sx={{ m: "10px" }}
+            />
+            <TextField
+              name="password"
+              theme={theme}
+              required
+              type="password"
+              inputRef={passwordRef}
+              label="Password"
+              inputProps={{ style: { textTransform: "inherit" } }}
+              sx={{ m: "10px" }}
+            />
+            <Button
+              variant="contained"
+              type="submit"
+              theme={theme}
+              sx={{ padding: "15px", m: "10px" }}
+            >
+              SIGN UP
+            </Button>
+          </form>
+        </Box>
+        <Typography variant="button" sx={{ p: "10px" }}>
+          Already Have an Account? <Link to="/login">LogIn</Link>
+        </Typography>
       </Box>
-      <Typography
-        variant="button"
-        sx={{
-          position: "absolute",
-          top: "70%",
-          left: "50%",
-          transform: "translate(-50%, -50%)",
-        }}
-      >
-        Already Have an Account? <Link to="/login">LogIn</Link>
-      </Typography>
-      <Box
-        sx={{
-          position: "absolute",
-          top: "90%",
-          left: "50%",
-          transform: "translate(-50%, -50%)",
-          width: "100%",
-        }}
-      >
+      <Box>
         <Footer />
       </Box>
     </Box>

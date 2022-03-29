@@ -7,10 +7,10 @@ const Footer = () => {
         flexGrow: 1,
         backgroundColor: "primary.main",
         margin: 0,
-        padding: "20px",
+        padding: "5px",
       }}
     >
-      <p>
+      <p style={{ margin: "5px" }}>
         Disclaimer: This is for educational purposes, the safety and security of
         information entered on this platform can not be guaranteed. By signing
         up you confirm that you understand the risks and can not hold any

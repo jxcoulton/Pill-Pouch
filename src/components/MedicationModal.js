@@ -2,29 +2,16 @@ import React, { useContext, useState } from "react";
 import { useAuth } from "../contexts/Auth";
 import { supabase } from "../supabase";
 import UserDataContext from "../contexts/userData";
-import { Button } from "@mui/material";
-import { Box } from "@mui/system";
-import { Typography } from "@mui/material";
-import { Select } from "@mui/material";
-import { MenuItem } from "@mui/material";
-import { DialogContent, DialogTitle } from "@mui/material";
+import {
+  Button,
+  Typography,
+  Select,
+  MenuItem,
+  DialogContent,
+} from "@mui/material";
 import Dialog from "@mui/material/Dialog";
 import Toastify from "toastify-js";
 import "toastify-js/src/toastify.css";
-
-const style = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: 400,
-  height: 400,
-  bgcolor: "background.paper",
-  border: "2px solid #000",
-  boxShadow: 24,
-  p: 4,
-  overflow: "scroll",
-};
 
 export default function MedicationModal() {
   const {
@@ -72,6 +59,7 @@ export default function MedicationModal() {
     setUpdateMedications(!updateMedications);
   }
 
+  //finding all the numbers in the medication name to create strength filter
   let newStrengths =
     !!foundMeds &&
     foundMeds
@@ -83,12 +71,14 @@ export default function MedicationModal() {
       )
       .sort((a, b) => (a[0] === b[0] ? a[1] - b[1] : a[0] - b[0]));
 
+  //formatting the found strengths into a string
   let str =
     !!newStrengths &&
     Array.from(new Set(newStrengths.map(JSON.stringify))).map((item) =>
       item.replace(/[[\]]/g, "").replace(/,/g, "/")
     );
 
+  //creating options for the dropdown
   const newTags =
     str.length > 0 &&
     str.map((med, i) => (
@@ -97,6 +87,7 @@ export default function MedicationModal() {
       </MenuItem>
     ));
 
+  //filtering the medications to display strength
   const filteredMeds =
     !!foundMeds &&
     foundMeds
@@ -131,8 +122,7 @@ export default function MedicationModal() {
   return (
     <>
       <Dialog open={openDialog} onClose={handleClose}>
-        {/* {dialog title with input value} */}
-        <DialogContent sx={{height: "400px"}}>
+        <DialogContent sx={{ height: "400px" }}>
           <Select
             onChange={(e) => handleChange(e)}
             defaultValue=" "

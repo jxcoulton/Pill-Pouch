@@ -12,9 +12,9 @@ const ProfileMedications = () => {
     updateMedications,
     setUpdateMedications,
   } = useContext(UserDataContext);
-
   const { user } = useAuth();
 
+  //fetch current meds from database
   useEffect(() => {
     const fetchCurrentMeds = async () => {
       try {
@@ -22,7 +22,7 @@ const ProfileMedications = () => {
           .from("drugs")
           .select("*")
           .eq("user_id", user?.id);
-        if (error) setCurrentMeds([]);
+        if (error) throw new Error(error);
         if (data) setCurrentMeds(data);
       } catch {
         setCurrentMeds([]);
@@ -31,6 +31,7 @@ const ProfileMedications = () => {
     fetchCurrentMeds();
   }, [user, updateMedications, setCurrentMeds]);
 
+  //create a list of medications
   const medsList = () => {
     let medications = [];
     medications = currentMeds.map((med, index) => {
@@ -44,7 +45,7 @@ const ProfileMedications = () => {
             margin: "5px",
             justifyContent: "space-between",
             textTransform: "capitalize",
-            padding: "5px 0px"
+            padding: "5px 0px",
           }}
         >
           {med.drug_name}
@@ -62,6 +63,7 @@ const ProfileMedications = () => {
     return medications;
   };
 
+  //remove a medication from database
   async function deleteCurrentMed(e) {
     const drugId = e.target.parentElement.id;
     const drugName = e.target.name;
@@ -72,7 +74,7 @@ const ProfileMedications = () => {
       .eq("user_id", user?.id);
     if (error) {
       Toastify({
-        text: `something went wrong`,
+        text: `Something went wrong`,
         duration: 3000,
         position: "left",
       }).showToast();
