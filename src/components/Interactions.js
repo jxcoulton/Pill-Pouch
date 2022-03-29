@@ -70,8 +70,6 @@ const Interactions = () => {
         style={{
           display: "flex",
           flexDirection: "column",
-          width: "50%",
-          alignSelf: "center",
         }}
       >
         <ProfileMedications />
@@ -86,8 +84,6 @@ const Interactions = () => {
           style={{
             display: "flex",
             flexDirection: "column",
-            width: "50%",
-            alignSelf: "center",
           }}
         >
           {interactions}

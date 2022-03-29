@@ -36,6 +36,7 @@ export function Dashboard() {
               variant="fullWidth"
               scrollButtons="auto"
               value={value}
+              
               textColor="secondary"
               TabIndicatorProps={{
                 style: { backgroundColor: theme.palette.secondary.main },
