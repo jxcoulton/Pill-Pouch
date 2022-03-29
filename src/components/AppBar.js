@@ -37,7 +37,9 @@ export default function SearchAppBar() {
             sx={{ paddingTop: "20px", paddingBottom: "30px" }}
           >
             <Grid item xs={10} sm={4}>
-              <Typography variant="h4">Pill-Pal</Typography>
+              <Typography variant="h4" sx={{ paddingBottom: "20px" }}>
+                Pill-Pal
+              </Typography>
             </Grid>
             <Grid
               item

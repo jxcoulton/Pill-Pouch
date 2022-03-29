@@ -63,13 +63,15 @@ const Interactions = () => {
   };
 
   return (
-    <Box style={{ display: "flex", flexDirection: "column" }}>
+    <Box>
       <Card
         variant="outlined"
         theme={theme}
         style={{
           display: "flex",
           flexDirection: "column",
+          alignItems: "center",
+          textAlign: "center",
         }}
       >
         <ProfileMedications />
@@ -77,6 +79,7 @@ const Interactions = () => {
           Search Interactions
         </Button>
       </Card>
+
       {interactions && (
         <Card
           variant="outlined"
@@ -84,6 +87,7 @@ const Interactions = () => {
           style={{
             display: "flex",
             flexDirection: "column",
+            alignItems: "center",
           }}
         >
           {interactions}

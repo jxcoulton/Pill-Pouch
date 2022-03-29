@@ -65,6 +65,7 @@ const ProfileMedications = () => {
 
   //remove a medication from database
   async function deleteCurrentMed(e) {
+    e.preventDefault();
     const drugId = e.target.parentElement.id;
     const drugName = e.target.name;
     const { error } = await supabase
@@ -88,7 +89,6 @@ const ProfileMedications = () => {
       }).showToast();
       setUpdateMedications(!updateMedications);
     }
-    setCurrentMeds([]);
   }
 
   return (
