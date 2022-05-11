@@ -20,17 +20,9 @@ export function AuthProvider({ children }) {
         setLoading(false);
       }
     );
-    //listen for close page and signout on close
-    const onBeforeUnload = (e) => {
-      supabase.auth.signOut();
-    };
-
-    window.addEventListener("beforeunload", onBeforeUnload);
-
-    //unsubscribe on unmount & remove close page listener
+    //unsubscribe on unmount
     return () => {
       listener?.unsubscribe();
-      window.removeEventListener("beforeunload", onBeforeUnload);
     };
   }, []);
 
